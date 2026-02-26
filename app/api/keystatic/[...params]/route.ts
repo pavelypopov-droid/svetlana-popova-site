@@ -1,6 +1,17 @@
 export const dynamic = 'force-dynamic'
 
-import { makeRouteHandler } from '@keystatic/next/route-handler'
-import config from '../../../../keystatic.config'
+import type { NextRequest } from 'next/server'
 
-export const { GET, POST } = makeRouteHandler({ config })
+export async function GET(req: NextRequest) {
+  const { makeRouteHandler } = await import('@keystatic/next/route-handler')
+  const { default: config } = await import('../../../../keystatic.config')
+  const { GET } = makeRouteHandler({ config })
+  return GET(req)
+}
+
+export async function POST(req: NextRequest) {
+  const { makeRouteHandler } = await import('@keystatic/next/route-handler')
+  const { default: config } = await import('../../../../keystatic.config')
+  const { POST } = makeRouteHandler({ config })
+  return POST(req)
+}
