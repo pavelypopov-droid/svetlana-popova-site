@@ -6,21 +6,32 @@ import { CtaBlock } from '@/components/shared/CtaBlock'
 import { Section } from '@/components/ui/Section'
 import { Quiz } from '@/components/shared/Quiz'
 
+const media = [
+  { name: 'Коммерсантъ', url: 'https://www.kommersant.ru/doc/8440058' },
+  { name: 'Russia Today', url: 'https://russian.rt.com/russia/news/1237153' },
+  { name: 'RuNews24', url: 'https://runews24.ru/society/04/12/2023/mamenkinyi' },
+  { name: 'Мир 24', url: 'https://mir24.tv/articles/16502677' },
+]
+
 function TrustBar() {
-  const items = [
-    '15+ лет практики',
-    '500+ клиентов',
-    'ВШЭ · РГСУ · ВЕИП',
-    'Russia Today · RuNews24 · Mir24',
-  ]
   return (
     <div className="bg-brand-light py-5">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-wrap justify-center gap-x-8 gap-y-2">
-          {items.map((item, i) => (
-            <span key={i} className="text-brand-dark/70 text-sm font-medium">
-              {item}
-            </span>
+          <span className="text-brand-dark/70 text-sm font-medium">15+ лет практики</span>
+          <span className="text-brand-dark/70 text-sm font-medium">500+ клиентов</span>
+          <span className="text-brand-dark/70 text-sm font-medium">ВШЭ · РГСУ · ВЕИП</span>
+          <span className="text-brand-dark/50 text-sm">|</span>
+          {media.map((outlet) => (
+            <a
+              key={outlet.url}
+              href={outlet.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-brand-dark/60 text-sm font-medium hover:text-brand-primary transition-colors underline-offset-2 hover:underline"
+            >
+              {outlet.name}
+            </a>
           ))}
         </div>
       </div>
