@@ -44,13 +44,14 @@ export async function GET(req: Request) {
   }
 
   const isSecure = process.env.NODE_ENV === 'production'
-  const cookieOpts = `Path=/; SameSite=Lax; ${isSecure ? 'Secure; ' : ''}HttpOnly`
+  // NOTE: No HttpOnly — Keystatic reads this cookie via document.cookie on the client
+  const cookieOpts = `Path=/; SameSite=Lax; ${isSecure ? 'Secure; ' : ''}`
   const maxAge = typeof tokenData.expires_in === 'number' ? tokenData.expires_in : ONE_YEAR
 
   const headers = new Headers()
   headers.append(
     'Set-Cookie',
-    `keystatic-gh-access-token=${tokenData.access_token}; ${cookieOpts}; Max-Age=${maxAge}`
+    `keystatic-gh-access-token=${tokenData.access_token}; ${cookieOpts}Max-Age=${maxAge}`
   )
 
   // Read state cookie to know where to redirect after login

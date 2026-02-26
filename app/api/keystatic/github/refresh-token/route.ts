@@ -18,8 +18,9 @@ export async function POST(req: Request) {
   }
 
   // Token is valid — re-set the cookie to extend session
+  // NOTE: No HttpOnly — Keystatic reads this cookie via document.cookie on the client
   const isSecure = process.env.NODE_ENV === 'production'
-  const cookieOpts = `Path=/; SameSite=Lax; ${isSecure ? 'Secure; ' : ''}HttpOnly; Max-Age=${ONE_YEAR}`
+  const cookieOpts = `Path=/; SameSite=Lax; ${isSecure ? 'Secure; ' : ''}Max-Age=${ONE_YEAR}`
 
   return new Response('', {
     status: 200,
