@@ -78,6 +78,23 @@ export default function PsihoterapiyaPage() {
         </div>
       </Section>
 
+      {/* Therapy room visual */}
+      <section className="relative w-full h-64 md:h-80 overflow-hidden">
+        <Image
+          src="/images/generated/therapy-room.png"
+          alt="Кабинет психолога"
+          fill
+          className="object-cover"
+          sizes="100vw"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+        <div className="absolute bottom-6 left-8 text-white">
+          <p className="text-lg font-medium" style={{ fontFamily: 'Georgia, serif' }}>
+            Пространство, где можно говорить о любом
+          </p>
+        </div>
+      </section>
+
       {/* Детская терапия */}
       <Section bg="bg-white">
         <div className="flex flex-col md:flex-row items-center gap-10">

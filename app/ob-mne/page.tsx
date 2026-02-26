@@ -80,13 +80,22 @@ export default function ObMnePage() {
                 Сейчас я веду частную практику — очно и онлайн. Работаю с взрослыми, подростками и детьми. Регулярно прохожу личную терапию и супервизии — это обязательная часть профессионального стандарта психотерапевта.
               </p>
             </div>
-            <div className="flex-shrink-0">
+            <div className="flex-shrink-0 flex flex-col gap-4">
               <div className="relative w-48 h-60 md:w-56 md:h-72 rounded-2xl overflow-hidden shadow-xl">
                 <Image
                   src="/images/svetlana/thoughtful.jpg"
                   alt="Светлана Попова"
                   fill
                   className="object-cover object-top"
+                  sizes="192px"
+                />
+              </div>
+              <div className="relative w-48 md:w-56 h-28 rounded-xl overflow-hidden shadow-lg">
+                <Image
+                  src="/images/generated/connection.png"
+                  alt="Доверие и поддержка"
+                  fill
+                  className="object-cover"
                   sizes="192px"
                 />
               </div>

@@ -1,4 +1,5 @@
 import { Metadata } from 'next'
+import Image from 'next/image'
 import { ServiceHero } from '@/components/shared/ServiceHero'
 import { CtaBlock } from '@/components/shared/CtaBlock'
 import { Section } from '@/components/ui/Section'
@@ -25,6 +26,23 @@ export default function KarierePage() {
         title="Найдите свой профессиональный путь"
         subtitle="Помогаю взрослым выстроить карьерную стратегию и подросткам выбрать профессию — осознанно и без лишней тревоги."
       />
+
+      {/* Career visual */}
+      <section className="relative w-full h-56 md:h-72 overflow-hidden">
+        <Image
+          src="/images/generated/career-path.png"
+          alt="Карьерный путь"
+          fill
+          className="object-cover"
+          sizes="100vw"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+        <div className="absolute bottom-6 left-8 text-white">
+          <p className="text-lg font-medium" style={{ fontFamily: 'Georgia, serif' }}>
+            Ваш путь — не случайность. Его можно выстроить осознанно.
+          </p>
+        </div>
+      </section>
 
       {/* Два блока: взрослые и подростки */}
       <Section bg="bg-brand-bg">

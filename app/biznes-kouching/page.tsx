@@ -1,4 +1,5 @@
 import { Metadata } from 'next'
+import Image from 'next/image'
 import { ServiceHero } from '@/components/shared/ServiceHero'
 import { CtaBlock } from '@/components/shared/CtaBlock'
 import { Section } from '@/components/ui/Section'
@@ -25,6 +26,23 @@ export default function KouchingPage() {
         title="От цели к результату — без лишних колебаний"
         subtitle="Для предпринимателей, руководителей и амбициозных специалистов, которые знают чего хотят, но что-то мешает."
       />
+
+      {/* Coaching visual */}
+      <section className="relative w-full h-56 md:h-72 overflow-hidden">
+        <Image
+          src="/images/generated/coaching-focus.png"
+          alt="Бизнес-коучинг"
+          fill
+          className="object-cover"
+          sizes="100vw"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+        <div className="absolute bottom-6 left-8 text-white">
+          <p className="text-lg font-medium" style={{ fontFamily: 'Georgia, serif' }}>
+            Ясность мышления — фундамент правильных решений
+          </p>
+        </div>
+      </section>
 
       {/* Отличие от терапии */}
       <Section bg="bg-brand-bg">
