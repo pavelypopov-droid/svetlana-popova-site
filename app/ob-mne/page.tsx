@@ -18,7 +18,12 @@ const education = [
   { org: 'Доп. образование', desc: 'Курсы КПТ, арт-терапии, телесно-ориентированного подхода, работы с детьми и подростками' },
 ]
 
-const media = ['Russia Today', 'RuNews24', 'Mir24']
+const media = [
+  { name: 'Коммерсантъ', url: 'https://www.kommersant.ru/doc/8440058' },
+  { name: 'Russia Today', url: 'https://russian.rt.com/russia/news/1237153' },
+  { name: 'RuNews24', url: 'https://runews24.ru/society/04/12/2023/mamenkinyi' },
+  { name: 'Мир 24', url: 'https://mir24.tv/articles/16502677' },
+]
 
 export default function ObMnePage() {
   return (
@@ -50,7 +55,6 @@ export default function ObMnePage() {
                 Психолог-консультант, психоаналитически ориентированный терапевт
               </p>
               <div className="flex flex-wrap gap-4 text-sm text-white/60">
-                <span>📍 Москва и онлайн</span>
                 <span>🎓 ВШЭ · РГСУ · ВЕИП</span>
                 <span>⏱ 15+ лет практики</span>
                 <span>👥 500+ клиентов</span>
@@ -73,7 +77,7 @@ export default function ObMnePage() {
                 За 15 лет практики я работала с самыми разными запросами: от острой тревоги и панических атак до карьерных кризисов и управленческих задач. Я вижу, как глубоко изнутри меняются люди, когда чувствуют себя услышанными и понятыми. Это и есть то, ради чего я работаю.
               </p>
               <p className="text-brand-dark/70 leading-relaxed">
-                Сейчас я веду частную практику онлайн и очно в Москве. Работаю с взрослыми, подростками и детьми. Регулярно прохожу личную терапию и супервизии — это обязательная часть профессионального стандарта психотерапевта.
+                Сейчас я веду частную практику — очно и онлайн. Работаю с взрослыми, подростками и детьми. Регулярно прохожу личную терапию и супервизии — это обязательная часть профессионального стандарта психотерапевта.
               </p>
             </div>
             <div className="flex-shrink-0">
@@ -144,6 +148,42 @@ export default function ObMnePage() {
         </div>
       </Section>
 
+      {/* Дипломы и сертификаты */}
+      <Section bg="bg-brand-bg">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-2xl md:text-3xl font-bold text-brand-dark mb-8 text-center">Дипломы и сертификаты</h2>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+            {[
+              { src: '/images/diplomas/Diplom_Magistra.jpg', alt: 'Диплом магистра' },
+              { src: '/images/diplomas/_1.jpg', alt: 'Диплом' },
+              { src: '/images/diplomas/_2.jpg', alt: 'Диплом' },
+              { src: '/images/diplomas/_3_1.jpeg', alt: 'Сертификат' },
+              { src: '/images/diplomas/_4.jpg', alt: 'Сертификат' },
+              { src: '/images/diplomas/photo.jpg', alt: 'Документ' },
+              { src: '/images/diplomas/Cert2018.jpg', alt: 'Сертификат 2018' },
+              { src: '/images/diplomas/Cert2018Deti.jpg', alt: 'Сертификат работа с детьми' },
+              { src: '/images/diplomas/IMG_4572.JPG', alt: 'Сертификат' },
+            ].map((doc, i) => (
+              <a
+                key={i}
+                href={doc.src}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="relative aspect-[3/4] rounded-xl overflow-hidden shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-hover)] hover:-translate-y-1 transition-all block"
+              >
+                <Image
+                  src={doc.src}
+                  alt={doc.alt}
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 640px) 45vw, (max-width: 768px) 30vw, 22vw"
+                />
+              </a>
+            ))}
+          </div>
+        </div>
+      </Section>
+
       {/* СМИ */}
       <Section bg="bg-white">
         <div className="max-w-3xl mx-auto text-center">
@@ -151,9 +191,15 @@ export default function ObMnePage() {
           <p className="text-brand-muted mb-8">Комментирую темы психологии, карьеры и личного развития</p>
           <div className="flex flex-wrap justify-center gap-6">
             {media.map((outlet, i) => (
-              <div key={i} className="px-8 py-4 bg-brand-bg rounded-xl shadow-[var(--shadow-card)] text-brand-dark font-bold text-lg">
-                {outlet}
-              </div>
+              <a
+                key={i}
+                href={outlet.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-8 py-4 bg-brand-bg rounded-xl shadow-[var(--shadow-card)] text-brand-dark font-bold text-lg hover:shadow-[var(--shadow-hover)] hover:-translate-y-0.5 transition-all"
+              >
+                {outlet.name}
+              </a>
             ))}
           </div>
         </div>

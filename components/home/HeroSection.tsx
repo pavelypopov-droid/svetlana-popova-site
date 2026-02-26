@@ -23,13 +23,13 @@ export function HeroSection() {
           {/* Text */}
           <div className="flex-1 order-2 md:order-1 text-center md:text-left">
             <span className="text-brand-gold text-sm font-semibold uppercase tracking-widest mb-4 block">
-              Психолог-консультант · Москва и онлайн
+              Психолог-консультант
             </span>
             <h1 className="text-4xl md:text-5xl font-bold text-brand-dark mb-6 leading-tight" style={{ fontFamily: 'Georgia, serif' }}>
-              Найти себя.<br />Выстроить жизнь.
+              Понять себя.<br />Построить свой маршрут.
             </h1>
             <p className="text-lg text-brand-dark/70 mb-8 leading-relaxed max-w-xl">
-              Психотерапия, карьерное консультирование и бизнес-коучинг — онлайн и в Москве
+              Психотерапия, профнавигация и бизнес-коучинг — офлайн и онлайн
             </p>
             <div className="flex flex-col sm:flex-row gap-4 mb-6 justify-center md:justify-start">
               <Button href="/zapis/" variant="primary" className="text-base px-7 py-3.5">

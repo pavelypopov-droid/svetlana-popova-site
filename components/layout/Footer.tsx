@@ -12,7 +12,7 @@ export function Footer() {
               Светлана Попова
             </div>
             <p className="text-white/60 text-sm leading-relaxed mb-6">
-              Психолог-консультант. Психотерапия, карьерное консультирование и бизнес-коучинг онлайн и в Москве.
+              Психолог-консультант. Психотерапия, профнавигация и бизнес-коучинг.
             </p>
             <div className="flex gap-3">
               <a
@@ -72,7 +72,7 @@ export function Footer() {
                 className="flex items-center gap-2 text-white/60 hover:text-white transition-colors text-sm"
               >
                 <FaWhatsapp className="text-green-400" />
-                +7 (903) 569-89-84
+                WhatsApp
               </a>
               <a
                 href="https://t.me/svet_psv_uz"
@@ -81,11 +81,8 @@ export function Footer() {
                 className="flex items-center gap-2 text-white/60 hover:text-white transition-colors text-sm"
               >
                 <FaTelegram className="text-blue-400" />
-                @svet_psv_uz
+                Telegram
               </a>
-              <p className="text-white/40 text-sm mt-2">
-                Онлайн и очно в Москве
-              </p>
             </div>
           </div>
         </div>

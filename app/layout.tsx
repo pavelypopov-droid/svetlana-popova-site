@@ -8,8 +8,8 @@ import { WhatsAppButton } from '@/components/shared/WhatsAppButton'
 const inter = Inter({ subsets: ['latin', 'cyrillic'], display: 'swap' })
 
 export const metadata: Metadata = {
-  title: 'Психолог онлайн — Светлана Попова',
-  description: 'Психотерапия, карьерное консультирование и бизнес-коучинг. 15+ лет практики. Онлайн и в Москве. Первая сессия бесплатно.',
+  title: 'Психолог — Светлана Попова',
+  description: 'Психотерапия, карьерное консультирование и бизнес-коучинг. 15+ лет практики. Первая сессия бесплатно.',
 }
 
 const jsonLd = {
@@ -17,13 +17,7 @@ const jsonLd = {
   '@type': 'Person',
   name: 'Светлана Попова',
   jobTitle: 'Психолог-консультант',
-  url: 'https://iofm.ru',
-  telephone: '+79035698984',
-  address: {
-    '@type': 'PostalAddress',
-    addressLocality: 'Москва',
-    addressCountry: 'RU',
-  },
+  url: 'https://toselfness.com',
   sameAs: ['https://t.me/svet_psv_uz'],
 }
 

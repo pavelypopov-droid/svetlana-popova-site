@@ -124,7 +124,7 @@ export default function ZapisPage() {
 
                 <div>
                   <label className="block text-sm font-semibold text-brand-dark mb-2">
-                    Интересующая услуга
+                    Ваш запрос
                   </label>
                   <select
                     value={form.service}
@@ -187,7 +187,7 @@ export default function ZapisPage() {
               <FaWhatsapp className="text-3xl text-green-500" />
               <div>
                 <div className="font-semibold text-brand-dark">WhatsApp</div>
-                <div className="text-brand-muted text-sm">+7 (903) 569-89-84</div>
+                <div className="text-brand-muted text-sm">Написать в WhatsApp</div>
               </div>
             </a>
             <a
@@ -199,7 +199,7 @@ export default function ZapisPage() {
               <FaTelegram className="text-3xl text-blue-500" />
               <div>
                 <div className="font-semibold text-brand-dark">Telegram</div>
-                <div className="text-brand-muted text-sm">@svet_psv_uz</div>
+                <div className="text-brand-muted text-sm">Написать в Telegram</div>
               </div>
             </a>
           </div>

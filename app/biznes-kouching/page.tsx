@@ -8,7 +8,7 @@ import { testimonials } from '@/content/testimonials'
 import { generatePageMetadata } from '@/lib/metadata'
 
 export const metadata: Metadata = generatePageMetadata({
-  title: 'Бизнес-коучинг онлайн',
+  title: 'Бизнес-коучинг',
   description: 'Коучинг для предпринимателей и руководителей. Достигайте целей без лишних колебаний.',
   path: '/biznes-kouching/',
 })
