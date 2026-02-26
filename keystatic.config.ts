@@ -33,12 +33,9 @@ export default config({
         date: fields.date({ label: 'Дата публикации', defaultValue: { kind: 'today' } }),
         category: fields.text({ label: 'Категория', defaultValue: 'Психология' }),
         excerpt: fields.text({ label: 'Анонс (краткое описание)', multiline: true }),
-        content: fields.document({
+        content: fields.markdoc({
           label: 'Текст статьи',
-          formatting: true,
-          dividers: true,
-          links: true,
-          images: { directory: 'public/images/blog', publicPath: '/images/blog/' },
+          extension: 'md',
         }),
       },
     }),
