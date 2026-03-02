@@ -171,10 +171,9 @@ export default function ObMnePage() {
               { src: '/images/diplomas/_2.jpg', alt: 'Диплом' },
               { src: '/images/diplomas/_3_1.jpeg', alt: 'Сертификат' },
               { src: '/images/diplomas/_4.jpg', alt: 'Сертификат' },
-
+              { src: '/images/diplomas/photo.jpg', alt: 'Документ' },
               { src: '/images/diplomas/Cert2018.jpg', alt: 'Сертификат 2018' },
               { src: '/images/diplomas/Cert2018Deti.jpg', alt: 'Сертификат работа с детьми' },
-              { src: '/images/diplomas/IMG_4572.JPG', alt: 'Сертификат' },
             ].map((doc, i) => (
               <a
                 key={i}
