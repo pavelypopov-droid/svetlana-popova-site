@@ -145,18 +145,6 @@ export default function ObMnePage() {
           <h2 className="text-2xl md:text-3xl font-bold text-brand-dark mb-8">Подход к работе</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <Card>
-              <h3 className="font-bold text-brand-dark mb-3">🔄 Личная терапия и супервизии</h3>
-              <p className="text-brand-dark/70 text-sm leading-relaxed">
-                Я регулярно прохожу личную терапию и супервизии — встречи с более опытным коллегой для разбора сложных случаев. Это обязательный профессиональный стандарт: психотерапевт, который сам не работает над собой, не может качественно помогать другим.
-              </p>
-            </Card>
-            <Card>
-              <h3 className="font-bold text-brand-dark mb-3">🧘 Духовные практики</h3>
-              <p className="text-brand-dark/70 text-sm leading-relaxed">
-                Практикую цигун и изучаю философию Ошо — не как религию, а как систему для понимания природы человека. Эти практики помогают мне сохранять внутреннюю устойчивость и более глубоко видеть то, что происходит с клиентом.
-              </p>
-            </Card>
-            <Card>
               <h3 className="font-bold text-brand-dark mb-3">🤝 Безоценочный подход</h3>
               <p className="text-brand-dark/70 text-sm leading-relaxed">
                 На наших сессиях нет правильных и неправильных ответов, нет осуждения. Я создаю пространство, где можно говорить о любом — и это само по себе уже часть исцеления.
@@ -183,7 +171,7 @@ export default function ObMnePage() {
               { src: '/images/diplomas/_2.jpg', alt: 'Диплом' },
               { src: '/images/diplomas/_3_1.jpeg', alt: 'Сертификат' },
               { src: '/images/diplomas/_4.jpg', alt: 'Сертификат' },
-              { src: '/images/diplomas/photo.jpg', alt: 'Документ' },
+
               { src: '/images/diplomas/Cert2018.jpg', alt: 'Сертификат 2018' },
               { src: '/images/diplomas/Cert2018Deti.jpg', alt: 'Сертификат работа с детьми' },
               { src: '/images/diplomas/IMG_4572.JPG', alt: 'Сертификат' },
