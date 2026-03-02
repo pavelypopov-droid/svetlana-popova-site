@@ -31,6 +31,7 @@ export default function ZapisPage() {
     times: [] as string[],
   })
   const [sending, setSending] = useState(false)
+  const [error, setError] = useState('')
 
   function handleTimeToggle(time: string) {
     setForm(prev => ({
@@ -44,10 +45,19 @@ export default function ZapisPage() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     setSending(true)
-    console.log('Form submission:', form)
-    // Simulate delay
-    await new Promise(r => setTimeout(r, 500))
-    router.push('/spasibo/')
+    setError('')
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form),
+      })
+      if (!res.ok) throw new Error()
+      router.push('/spasibo/')
+    } catch {
+      setError('Не удалось отправить заявку. Попробуйте написать в WhatsApp или Telegram.')
+      setSending(false)
+    }
   }
 
   return (
@@ -159,6 +169,12 @@ export default function ZapisPage() {
                     ))}
                   </div>
                 </div>
+
+                {error && (
+                  <div className="p-4 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
+                    {error}
+                  </div>
+                )}
 
                 <button
                   type="submit"
