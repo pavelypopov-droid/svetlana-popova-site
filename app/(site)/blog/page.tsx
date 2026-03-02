@@ -27,28 +27,31 @@ export default function BlogPage() {
 
   return (
     <>
-      <section className="bg-brand-dark py-16 md:py-20">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <span className="text-brand-gold text-sm font-semibold uppercase tracking-widest mb-4 block">
-            Блог
-          </span>
-          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4" style={{ fontFamily: 'Georgia, serif' }}>
-            Статьи о психологии
-          </h1>
-          <p className="text-white/70 text-xl">Практичные советы и ответы на частые вопросы</p>
+      <section className="bg-brand-dark py-16 md:py-24">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col md:flex-row items-center gap-10 md:gap-14">
+            <div className="flex-1 text-center md:text-left">
+              <span className="text-brand-gold text-sm font-semibold uppercase tracking-widest mb-4 block">
+                Блог
+              </span>
+              <h1 className="text-4xl md:text-5xl font-bold text-white mb-4" style={{ fontFamily: 'Georgia, serif' }}>
+                Статьи о психологии
+              </h1>
+              <p className="text-white/70 text-xl">Практичные советы и ответы на частые вопросы</p>
+            </div>
+            <div className="flex-shrink-0">
+              <div className="relative w-56 h-72 md:w-64 md:h-80 rounded-2xl overflow-hidden shadow-2xl">
+                <Image
+                  src="/images/blog/blog-hero.jpg"
+                  alt="Блог Светланы Поповой"
+                  fill
+                  className="object-cover object-top"
+                  sizes="(max-width: 768px) 224px, 256px"
+                />
+              </div>
+            </div>
+          </div>
         </div>
-      </section>
-
-      {/* Blog hero image */}
-      <section className="relative w-full h-48 md:h-64 overflow-hidden">
-        <Image
-          src="/images/blog/blog-hero.jpg"
-          alt="Блог Светланы Поповой"
-          fill
-          className="object-cover"
-          sizes="100vw"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-brand-bg/80 to-transparent" />
       </section>
 
       <Section bg="bg-brand-bg">

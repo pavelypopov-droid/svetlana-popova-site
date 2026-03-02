@@ -1,6 +1,5 @@
 import { Metadata } from 'next'
 import Image from 'next/image'
-import { ServiceHero } from '@/components/shared/ServiceHero'
 import { CtaBlock } from '@/components/shared/CtaBlock'
 import { Section } from '@/components/ui/Section'
 import { Card } from '@/components/ui/Card'
@@ -21,26 +20,35 @@ export default function KouchingPage() {
 
   return (
     <>
-      <ServiceHero
-        badge="Сопровождение лидеров"
-        title="От цели к результату — без лишних колебаний"
-        subtitle="Для предпринимателей, руководителей и амбициозных специалистов, которые знают чего хотят, но что-то мешает."
-      />
-
-      {/* Coaching visual */}
-      <section className="relative w-full h-56 md:h-72 overflow-hidden">
-        <Image
-          src="/images/generated/coaching-focus.jpg"
-          alt="Сопровождение бизнес-лидеров"
-          fill
-          className="object-cover"
-          sizes="100vw"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-        <div className="absolute bottom-6 left-8 text-white">
-          <p className="text-lg font-medium" style={{ fontFamily: 'Georgia, serif' }}>
-            Ясность мышления — фундамент правильных решений
-          </p>
+      <section className="bg-brand-dark py-20 md:py-28">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col md:flex-row items-center gap-10 md:gap-14">
+            <div className="flex-1">
+              <span className="inline-block text-brand-gold text-sm font-semibold uppercase tracking-widest mb-4">
+                Сопровождение лидеров
+              </span>
+              <h1 className="text-4xl md:text-5xl font-bold text-white mb-6 max-w-3xl leading-tight" style={{ fontFamily: 'Georgia, serif' }}>
+                От цели к результату — без лишних колебаний
+              </h1>
+              <p className="text-white/80 text-xl mb-4 max-w-2xl">
+                Для предпринимателей, руководителей и амбициозных специалистов, которые знают чего хотят, но что-то мешает.
+              </p>
+              <p className="text-white/50 text-lg" style={{ fontFamily: 'Georgia, serif' }}>
+                Ясность мышления — фундамент правильных решений
+              </p>
+            </div>
+            <div className="flex-shrink-0">
+              <div className="relative w-56 h-72 md:w-64 md:h-80 rounded-2xl overflow-hidden shadow-2xl">
+                <Image
+                  src="/images/generated/coaching-focus.jpg"
+                  alt="Сопровождение бизнес-лидеров"
+                  fill
+                  className="object-cover object-top"
+                  sizes="(max-width: 768px) 224px, 256px"
+                />
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
