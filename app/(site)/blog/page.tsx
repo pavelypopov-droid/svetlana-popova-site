@@ -8,7 +8,7 @@ import { generatePageMetadata } from '@/lib/metadata'
 import { formatDate } from '@/lib/utils'
 
 export const metadata: Metadata = generatePageMetadata({
-  title: 'Блог — психология, карьера и коучинг',
+  title: 'Блог — психология, профнавигация и развитие',
   description: 'Статьи о психологии, карьере и личном развитии. Практичные советы от психолога Светланы Поповой.',
   path: '/blog/',
 })
@@ -16,7 +16,7 @@ export const metadata: Metadata = generatePageMetadata({
 const categoryColors: Record<string, 'primary' | 'accent' | 'gold'> = {
   'Психология': 'primary',
   'Карьера': 'accent',
-  'Коучинг': 'gold',
+  'Развитие': 'gold',
   'Дети': 'primary',
   'Самопознание': 'accent',
 }

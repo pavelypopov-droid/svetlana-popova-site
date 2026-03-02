@@ -29,7 +29,7 @@ export function HeroSection() {
               Понять себя.<br />Построить свой маршрут.
             </h1>
             <p className="text-lg text-brand-dark/70 mb-8 leading-relaxed max-w-xl">
-              Психотерапия, профнавигация и бизнес-коучинг — офлайн и онлайн
+              Психотерапия, профнавигация и сопровождение лидеров — офлайн и онлайн
             </p>
             <div className="flex flex-col sm:flex-row gap-4 mb-6 justify-center md:justify-start">
               <Button href="/zapis/" variant="primary" className="text-base px-7 py-3.5">
@@ -40,7 +40,7 @@ export function HeroSection() {
               </Button>
             </div>
             <p className="text-sm text-brand-muted">
-              15+ лет практики · 500+ клиентов · ВШЭ, РГСУ, ВЕИП
+              18+ лет практики · 500+ клиентов · ВШЭ, РГСУ, ВЕИП
             </p>
           </div>
         </div>

@@ -6,7 +6,7 @@ const inter = Inter({ subsets: ['latin', 'cyrillic'], display: 'swap' })
 
 export const metadata: Metadata = {
   title: 'Психолог — Светлана Попова',
-  description: 'Психотерапия, карьерное консультирование и бизнес-коучинг. 15+ лет практики. Первая сессия бесплатно.',
+  description: 'Психотерапия, профнавигация и сопровождение бизнес-лидеров. 18+ лет практики. Первая сессия бесплатно.',
 }
 
 const jsonLd = {

@@ -9,8 +9,8 @@ const CALENDLY_URL = process.env.NEXT_PUBLIC_CALENDLY_URL || ''
 
 const serviceOptions = [
   'Психотерапия',
-  'Карьерное консультирование',
-  'Бизнес-коучинг',
+  'Профнавигация',
+  'Сопровождение бизнес-лидеров',
   'Пока не знаю',
 ]
 

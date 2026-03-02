@@ -27,7 +27,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 const categoryColors: Record<string, 'primary' | 'accent' | 'gold'> = {
   'Психология': 'primary',
   'Карьера': 'accent',
-  'Коучинг': 'gold',
+  'Развитие': 'gold',
   'Дети': 'primary',
   'Самопознание': 'accent',
 }

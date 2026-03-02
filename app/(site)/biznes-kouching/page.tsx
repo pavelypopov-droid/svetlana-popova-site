@@ -9,8 +9,8 @@ import { testimonials } from '@/content/testimonials'
 import { generatePageMetadata } from '@/lib/metadata'
 
 export const metadata: Metadata = generatePageMetadata({
-  title: 'Бизнес-коучинг',
-  description: 'Коучинг для предпринимателей и руководителей. Достигайте целей без лишних колебаний.',
+  title: 'Сопровождение бизнес-лидеров',
+  description: 'Индивидуальное сопровождение для предпринимателей и руководителей. Достигайте целей без лишних колебаний.',
   path: '/biznes-kouching/',
 })
 
@@ -22,7 +22,7 @@ export default function KouchingPage() {
   return (
     <>
       <ServiceHero
-        badge="Бизнес-коучинг"
+        badge="Сопровождение лидеров"
         title="От цели к результату — без лишних колебаний"
         subtitle="Для предпринимателей, руководителей и амбициозных специалистов, которые знают чего хотят, но что-то мешает."
       />
@@ -31,7 +31,7 @@ export default function KouchingPage() {
       <section className="relative w-full h-56 md:h-72 overflow-hidden">
         <Image
           src="/images/generated/coaching-focus.png"
-          alt="Бизнес-коучинг"
+          alt="Сопровождение бизнес-лидеров"
           fill
           className="object-cover"
           sizes="100vw"
@@ -48,24 +48,24 @@ export default function KouchingPage() {
       <Section bg="bg-brand-bg">
         <div className="max-w-3xl mx-auto">
           <Card className="p-8 border-l-4 border-brand-gold">
-            <h2 className="text-xl font-bold text-brand-dark mb-4">Чем коучинг отличается от терапии?</h2>
+            <h2 className="text-xl font-bold text-brand-dark mb-4">Чем сопровождение отличается от терапии?</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 text-sm">
               <div>
-                <div className="font-semibold text-brand-primary mb-2">Коучинг</div>
+                <div className="font-semibold text-brand-primary mb-2">Сопровождение лидеров</div>
                 <ul className="space-y-1.5 text-brand-dark/70">
-                  <li>→ Фокус на цели и будущем</li>
+                  <li>→ Фокус на целях и стратегии</li>
                   <li>→ Конкретные задачи и сроки</li>
-                  <li>→ Работа с ресурсами и стратегией</li>
-                  <li>→ Подходит тем, кто психически здоров</li>
+                  <li>→ Работа с ресурсами и потенциалом</li>
+                  <li>→ Подходит тем, кто готов к действиям</li>
                 </ul>
               </div>
               <div>
                 <div className="font-semibold text-brand-accent mb-2">Психотерапия</div>
                 <ul className="space-y-1.5 text-brand-dark/70">
-                  <li>→ Работа с прошлым и эмоциями</li>
-                  <li>→ Глубинные паттерны поведения</li>
-                  <li>→ Нет конкретных бизнес-задач</li>
-                  <li>→ Подходит при психических трудностях</li>
+                  <li>→ Работа с внутренними переживаниями</li>
+                  <li>→ Глубинные паттерны и эмоции</li>
+                  <li>→ Без привязки к бизнес-задачам</li>
+                  <li>→ Подходит, когда нужно разобраться в себе</li>
                 </ul>
               </div>
             </div>
@@ -162,7 +162,7 @@ export default function KouchingPage() {
       <CtaBlock
         title="Готовы двигаться к цели?"
         subtitle="Первые 15 минут — бесплатно. Расскажите о своей задаче, и мы поймём, как я могу помочь."
-        buttonText="Записаться на коучинг"
+        buttonText="Записаться на сессию"
       />
     </>
   )

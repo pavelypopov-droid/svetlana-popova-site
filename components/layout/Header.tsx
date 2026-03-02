@@ -5,8 +5,8 @@ import { usePathname } from 'next/navigation'
 
 const navLinks = [
   { href: '/psihoterapiya/', label: 'Психотерапия' },
-  { href: '/karyernoe-konsultirovanie/', label: 'Карьера' },
-  { href: '/biznes-kouching/', label: 'Коучинг' },
+  { href: '/karyernoe-konsultirovanie/', label: 'Профнавигация' },
+  { href: '/biznes-kouching/', label: 'Лидерство' },
   { href: '/ob-mne/', label: 'Обо мне' },
   { href: '/otzyvy/', label: 'Отзывы' },
   { href: '/blog/', label: 'Блог' },

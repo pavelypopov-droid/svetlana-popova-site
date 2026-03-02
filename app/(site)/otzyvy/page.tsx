@@ -10,7 +10,7 @@ const filters: { value: 'all' | Service; label: string }[] = [
   { value: 'all', label: 'Все' },
   { value: 'therapy', label: 'Психотерапия' },
   { value: 'career', label: 'Карьера' },
-  { value: 'coaching', label: 'Коучинг' },
+  { value: 'coaching', label: 'Лидерство' },
 ]
 
 export default function OtzyvyPage() {
@@ -63,7 +63,7 @@ export default function OtzyvyPage() {
                   <div className="text-brand-muted text-sm">{t.age} лет, {t.role}</div>
                 </div>
                 <span className="ml-auto text-xs px-2 py-1 bg-brand-light rounded-full text-brand-primary font-medium capitalize">
-                  {t.service === 'therapy' ? 'Терапия' : t.service === 'career' ? 'Карьера' : 'Коучинг'}
+                  {t.service === 'therapy' ? 'Терапия' : t.service === 'career' ? 'Профнавигация' : 'Лидерство'}
                 </span>
               </div>
               <div className="mb-3">

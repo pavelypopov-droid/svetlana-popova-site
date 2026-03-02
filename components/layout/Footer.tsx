@@ -12,7 +12,7 @@ export function Footer() {
               Светлана Попова
             </div>
             <p className="text-white/60 text-sm leading-relaxed mb-6">
-              Психолог-консультант. Психотерапия, профнавигация и бизнес-коучинг.
+              Психолог-консультант. Психотерапия, профнавигация и сопровождение бизнес-лидеров.
             </p>
             <div className="flex gap-3">
               <a
@@ -43,8 +43,8 @@ export function Footer() {
               {[
                 { href: '/', label: 'Главная' },
                 { href: '/psihoterapiya/', label: 'Психотерапия' },
-                { href: '/karyernoe-konsultirovanie/', label: 'Карьерное консультирование' },
-                { href: '/biznes-kouching/', label: 'Бизнес-коучинг' },
+                { href: '/karyernoe-konsultirovanie/', label: 'Профнавигация' },
+                { href: '/biznes-kouching/', label: 'Сопровождение лидеров' },
                 { href: '/ob-mne/', label: 'Обо мне' },
                 { href: '/otzyvy/', label: 'Отзывы' },
                 { href: '/blog/', label: 'Блог' },

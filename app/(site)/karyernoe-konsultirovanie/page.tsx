@@ -9,8 +9,8 @@ import { testimonials } from '@/content/testimonials'
 import { generatePageMetadata } from '@/lib/metadata'
 
 export const metadata: Metadata = generatePageMetadata({
-  title: 'Карьерное консультирование',
-  description: 'Карьерная стратегия для взрослых и профориентация для подростков. Найдём ваш путь вместе.',
+  title: 'Профнавигация',
+  description: 'Профессиональная навигация для взрослых и профориентация для подростков. Найдём ваш путь вместе.',
   path: '/karyernoe-konsultirovanie/',
 })
 
@@ -22,9 +22,9 @@ export default function KarierePage() {
   return (
     <>
       <ServiceHero
-        badge="Карьерное консультирование"
+        badge="Профнавигация"
         title="Найдите свой профессиональный путь"
-        subtitle="Помогаю взрослым выстроить карьерную стратегию и подросткам выбрать профессию — осознанно и без лишней тревоги."
+        subtitle="Помогаю взрослым выстроить профессиональную стратегию и подросткам выбрать профессию — осознанно и без лишней тревоги."
       />
 
       {/* Career visual */}
@@ -160,7 +160,7 @@ export default function KarierePage() {
       <CtaBlock
         title="Готовы найти свой путь?"
         subtitle="Запишитесь на бесплатные 15 минут — обсудим ваш запрос и поймём, с чего начать."
-        buttonText="Записаться на карьерную сессию"
+        buttonText="Записаться на сессию профнавигации"
       />
     </>
   )

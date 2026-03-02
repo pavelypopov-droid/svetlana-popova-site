@@ -53,8 +53,8 @@ export default config({
           label: 'Услуга',
           options: [
             { label: 'Психотерапия', value: 'therapy' },
-            { label: 'Карьерное консультирование', value: 'career' },
-            { label: 'Бизнес-коучинг', value: 'coaching' },
+            { label: 'Профнавигация', value: 'career' },
+            { label: 'Сопровождение бизнес-лидеров', value: 'coaching' },
           ],
           defaultValue: 'therapy',
         }),
@@ -80,8 +80,8 @@ export default config({
         }),
         prices: fields.object({
           therapy: fields.text({ label: 'Психотерапия' }),
-          career: fields.text({ label: 'Карьерное консультирование' }),
-          coaching: fields.text({ label: 'Бизнес-коучинг' }),
+          career: fields.text({ label: 'Профнавигация' }),
+          coaching: fields.text({ label: 'Сопровождение бизнес-лидеров' }),
         }),
       },
     }),
@@ -114,7 +114,7 @@ export default config({
     }),
 
     careerPage: singleton({
-      label: 'Страница: Карьерное консультирование',
+      label: 'Страница: Профнавигация',
       path: 'content/pages/career',
       format: { data: 'yaml' },
       schema: {
@@ -130,7 +130,7 @@ export default config({
     }),
 
     coachingPage: singleton({
-      label: 'Страница: Бизнес-коучинг',
+      label: 'Страница: Сопровождение бизнес-лидеров',
       path: 'content/pages/coaching',
       format: { data: 'yaml' },
       schema: {

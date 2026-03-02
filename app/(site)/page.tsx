@@ -18,7 +18,7 @@ function TrustBar() {
     <div className="bg-brand-light py-5">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-wrap justify-center gap-x-8 gap-y-2">
-          <span className="text-brand-dark/70 text-sm font-medium">15+ лет практики</span>
+          <span className="text-brand-dark/70 text-sm font-medium">18+ лет практики</span>
           <span className="text-brand-dark/70 text-sm font-medium">500+ клиентов</span>
           <span className="text-brand-dark/70 text-sm font-medium">ВШЭ · РГСУ · ВЕИП</span>
           <span className="text-brand-dark/50 text-sm">|</span>
