@@ -8,9 +8,9 @@ import { Quiz } from '@/components/shared/Quiz'
 
 const media = [
   { name: 'Коммерсантъ', url: 'https://www.kommersant.ru/doc/8440058' },
+  { name: 'Мир 24', url: 'https://mir24.tv/articles/16502677' },
   { name: 'Russia Today', url: '' },
   { name: 'RuNews24', url: '' },
-  { name: 'Мир 24', url: 'https://mir24.tv/articles/16502677' },
 ]
 
 function TrustBar() {
