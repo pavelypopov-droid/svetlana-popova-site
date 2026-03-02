@@ -8,8 +8,8 @@ import { Quiz } from '@/components/shared/Quiz'
 
 const media = [
   { name: 'Коммерсантъ', url: 'https://www.kommersant.ru/doc/8440058' },
-  { name: 'Russia Today', url: 'https://russian.rt.com/russia/news/1237153' },
-  { name: 'RuNews24', url: 'https://runews24.ru/society/04/12/2023/mamenkinyi' },
+  { name: 'Russia Today', url: '' },
+  { name: 'RuNews24', url: '' },
   { name: 'Мир 24', url: 'https://mir24.tv/articles/16502677' },
 ]
 
@@ -23,15 +23,24 @@ function TrustBar() {
           <span className="text-brand-dark/70 text-sm font-medium">ВШЭ · РГСУ · ВЕИП</span>
           <span className="text-brand-dark/50 text-sm">|</span>
           {media.map((outlet) => (
-            <a
-              key={outlet.url}
-              href={outlet.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-brand-dark/60 text-sm font-medium hover:text-brand-primary transition-colors underline-offset-2 hover:underline"
-            >
-              {outlet.name}
-            </a>
+            outlet.url ? (
+              <a
+                key={outlet.name}
+                href={outlet.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-brand-dark/60 text-sm font-medium hover:text-brand-primary transition-colors underline-offset-2 hover:underline"
+              >
+                {outlet.name}
+              </a>
+            ) : (
+              <span
+                key={outlet.name}
+                className="text-brand-dark/60 text-sm font-medium"
+              >
+                {outlet.name}
+              </span>
+            )
           ))}
         </div>
       </div>

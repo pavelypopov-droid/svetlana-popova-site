@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import Image from 'next/image'
 import { getAllPosts } from '@/lib/blog'
 import { Section } from '@/components/ui/Section'
 import { Card } from '@/components/ui/Card'
@@ -36,6 +37,18 @@ export default function BlogPage() {
           </h1>
           <p className="text-white/70 text-xl">Практичные советы и ответы на частые вопросы</p>
         </div>
+      </section>
+
+      {/* Blog hero image */}
+      <section className="relative w-full h-48 md:h-64 overflow-hidden">
+        <Image
+          src="/images/blog/blog-hero.jpg"
+          alt="Блог Светланы Поповой"
+          fill
+          className="object-cover"
+          sizes="100vw"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-brand-bg/80 to-transparent" />
       </section>
 
       <Section bg="bg-brand-bg">

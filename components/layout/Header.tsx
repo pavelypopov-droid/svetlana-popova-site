@@ -10,6 +10,7 @@ const navLinks = [
   { href: '/ob-mne/', label: 'Обо мне' },
   { href: '/otzyvy/', label: 'Отзывы' },
   { href: '/blog/', label: 'Блог' },
+  { href: '/faq/', label: 'FAQ' },
 ]
 
 export function Header() {

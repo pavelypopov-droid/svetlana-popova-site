@@ -48,6 +48,7 @@ export function Footer() {
                 { href: '/ob-mne/', label: 'Обо мне' },
                 { href: '/otzyvy/', label: 'Отзывы' },
                 { href: '/blog/', label: 'Блог' },
+                { href: '/faq/', label: 'FAQ' },
                 { href: '/zapis/', label: 'Записаться' },
               ].map(link => (
                 <Link

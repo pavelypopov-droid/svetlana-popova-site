@@ -20,8 +20,8 @@ const education = [
 
 const media = [
   { name: 'Коммерсантъ', url: 'https://www.kommersant.ru/doc/8440058' },
-  { name: 'Russia Today', url: 'https://russian.rt.com/russia/news/1237153' },
-  { name: 'RuNews24', url: 'https://runews24.ru/society/04/12/2023/mamenkinyi' },
+  { name: 'Russia Today', url: '' },
+  { name: 'RuNews24', url: '' },
   { name: 'Мир 24', url: 'https://mir24.tv/articles/16502677' },
 ]
 
@@ -200,15 +200,24 @@ export default function ObMnePage() {
           <p className="text-brand-muted mb-8">Комментирую темы психологии, карьеры и личного развития</p>
           <div className="flex flex-wrap justify-center gap-6">
             {media.map((outlet, i) => (
-              <a
-                key={i}
-                href={outlet.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="px-8 py-4 bg-brand-bg rounded-xl shadow-[var(--shadow-card)] text-brand-dark font-bold text-lg hover:shadow-[var(--shadow-hover)] hover:-translate-y-0.5 transition-all"
-              >
-                {outlet.name}
-              </a>
+              outlet.url ? (
+                <a
+                  key={i}
+                  href={outlet.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-8 py-4 bg-brand-bg rounded-xl shadow-[var(--shadow-card)] text-brand-dark font-bold text-lg hover:shadow-[var(--shadow-hover)] hover:-translate-y-0.5 transition-all"
+                >
+                  {outlet.name}
+                </a>
+              ) : (
+                <span
+                  key={i}
+                  className="px-8 py-4 bg-brand-bg rounded-xl shadow-[var(--shadow-card)] text-brand-dark/60 font-bold text-lg"
+                >
+                  {outlet.name}
+                </span>
+              )
             ))}
           </div>
         </div>

@@ -30,7 +30,7 @@ export default function KouchingPage() {
       {/* Coaching visual */}
       <section className="relative w-full h-56 md:h-72 overflow-hidden">
         <Image
-          src="/images/generated/coaching-focus.png"
+          src="/images/generated/coaching-focus.jpg"
           alt="Сопровождение бизнес-лидеров"
           fill
           className="object-cover"
