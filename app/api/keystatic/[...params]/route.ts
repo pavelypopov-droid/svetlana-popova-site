@@ -1,17 +1,14 @@
+import { makeRouteHandler } from '@keystatic/next/route-handler'
+import config from '../../../../keystatic.config'
+
 export const dynamic = 'force-dynamic'
 
-import type { NextRequest } from 'next/server'
+const handler = makeRouteHandler({
+  config,
+  clientId: process.env.NEXT_PUBLIC_KEYSTATIC_GITHUB_CLIENT_ID,
+  clientSecret: process.env.KEYSTATIC_GITHUB_CLIENT_SECRET,
+  secret: process.env.KEYSTATIC_SECRET,
+})
 
-export async function GET(req: NextRequest) {
-  const { makeRouteHandler } = await import('@keystatic/next/route-handler')
-  const { default: config } = await import('../../../../keystatic.config')
-  const { GET } = makeRouteHandler({ config })
-  return GET(req)
-}
-
-export async function POST(req: NextRequest) {
-  const { makeRouteHandler } = await import('@keystatic/next/route-handler')
-  const { default: config } = await import('../../../../keystatic.config')
-  const { POST } = makeRouteHandler({ config })
-  return POST(req)
-}
+export const GET = handler.GET
+export const POST = handler.POST
