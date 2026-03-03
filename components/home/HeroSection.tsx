@@ -1,7 +1,17 @@
 import Image from 'next/image'
 import { Button } from '@/components/ui/Button'
 
-export function HeroSection() {
+interface HeroSectionProps {
+  badge: string
+  tagline: string
+  subtitle: string
+  cta: string
+  cta2: string
+  stats: string
+}
+
+export function HeroSection({ badge, tagline, subtitle, cta, cta2, stats }: HeroSectionProps) {
+  const lines = tagline.split('.')
   return (
     <section className="bg-brand-bg pt-8 pb-16 md:pt-16 md:pb-24">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -23,24 +33,28 @@ export function HeroSection() {
           {/* Text */}
           <div className="flex-1 order-2 md:order-1 text-center md:text-left">
             <span className="text-brand-gold text-sm font-semibold uppercase tracking-widest mb-4 block">
-              Психолог-консультант
+              {badge}
             </span>
             <h1 className="text-4xl md:text-5xl font-bold text-brand-dark mb-6 leading-tight" style={{ fontFamily: 'Georgia, serif' }}>
-              Понять себя.<br />Построить свой маршрут.
+              {lines.map((line, i) => (
+                <span key={i}>
+                  {line.trim()}{i < lines.length - 1 ? '.' : ''}{i < lines.length - 2 ? <br /> : ''}
+                </span>
+              ))}
             </h1>
             <p className="text-lg text-brand-dark/70 mb-8 leading-relaxed max-w-xl">
-              Психотерапия, профнавигация и сопровождение лидеров — офлайн и онлайн
+              {subtitle}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 mb-6 justify-center md:justify-start">
               <Button href="/zapis/" variant="primary" className="text-base px-7 py-3.5">
-                Записаться на бесплатную консультацию
+                {cta}
               </Button>
               <Button href="#quiz" variant="secondary" className="text-base">
-                Пройти тест
+                {cta2}
               </Button>
             </div>
             <p className="text-sm text-brand-muted">
-              18+ лет практики · 500+ клиентов · ВШЭ, РГСУ, ВЕИП
+              {stats}
             </p>
           </div>
         </div>

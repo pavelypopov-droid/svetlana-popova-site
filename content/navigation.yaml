@@ -1,0 +1,46 @@
+site_name: Светлана Попова
+header_links:
+  - href: /psihoterapiya/
+    label: Психотерапия
+  - href: /karyernoe-konsultirovanie/
+    label: Профнавигация
+  - href: /biznes-kouching/
+    label: Лидерство
+  - href: /ob-mne/
+    label: Обо мне
+  - href: /otzyvy/
+    label: Отзывы
+  - href: /blog/
+    label: Блог
+  - href: /faq/
+    label: FAQ
+header_cta_text: Записаться
+header_cta_href: /zapis/
+footer_description: "Психолог-консультант. Психотерапия, профнавигация и сопровождение бизнес-лидеров."
+footer_links:
+  - href: /
+    label: Главная
+  - href: /psihoterapiya/
+    label: Психотерапия
+  - href: /karyernoe-konsultirovanie/
+    label: Профнавигация
+  - href: /biznes-kouching/
+    label: Сопровождение лидеров
+  - href: /ob-mne/
+    label: Обо мне
+  - href: /otzyvy/
+    label: Отзывы
+  - href: /blog/
+    label: Блог
+  - href: /faq/
+    label: FAQ
+  - href: /zapis/
+    label: Записаться
+social_links:
+  - platform: whatsapp
+    url: "https://wa.me/79035698984"
+    label: WhatsApp
+  - platform: telegram
+    url: "https://t.me/svet_psv_uz"
+    label: Telegram
+copyright: "Светлана Попова. Все права защищены."

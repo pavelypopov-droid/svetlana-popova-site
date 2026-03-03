@@ -48,7 +48,7 @@ async function sendEmail(form: ContactForm): Promise<void> {
       Authorization: `Bearer ${apiKey}`,
     },
     body: JSON.stringify({
-      from: 'Сайт Светланы Поповой <onboarding@resend.dev>',
+      from: 'Светлана Попова <noreply@toselfness.com>',
       to: ['psv@iofm.ru'],
       subject: `Заявка от ${form.name}`,
       text: formatMessage(form),

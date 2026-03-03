@@ -3,8 +3,7 @@ import Image from 'next/image'
 import { CtaBlock } from '@/components/shared/CtaBlock'
 import { Section } from '@/components/ui/Section'
 import { Card } from '@/components/ui/Card'
-import { services } from '@/content/services'
-import { testimonials } from '@/content/testimonials'
+import { getCoachingPage, getAllTestimonials } from '@/lib/content'
 import { generatePageMetadata } from '@/lib/metadata'
 
 export const metadata: Metadata = generatePageMetadata({
@@ -13,10 +12,17 @@ export const metadata: Metadata = generatePageMetadata({
   path: '/biznes-kouching/',
 })
 
-const s = services.coaching
-
-export default function KouchingPage() {
+export default async function KouchingPage() {
+  const [s, testimonials] = await Promise.all([
+    getCoachingPage(),
+    getAllTestimonials(),
+  ])
   const relatedTestimonials = testimonials.filter(t => t.service === 'coaching').slice(0, 2)
+  const pains = s?.pains || []
+  const steps = s?.steps || []
+  const results = s?.results || []
+  const compCoachingItems = s?.comparison_coaching_items || []
+  const compTherapyItems = s?.comparison_therapy_items || []
 
   return (
     <>
@@ -25,55 +31,40 @@ export default function KouchingPage() {
           <div className="flex flex-col md:flex-row items-center gap-10 md:gap-14">
             <div className="flex-1">
               <span className="inline-block text-brand-gold text-sm font-semibold uppercase tracking-widest mb-4">
-                Сопровождение лидеров
+                {s?.badge || 'Сопровождение лидеров'}
               </span>
               <h1 className="text-4xl md:text-5xl font-bold text-white mb-6 max-w-3xl leading-tight" style={{ fontFamily: 'Georgia, serif' }}>
-                От цели к результату — без лишних колебаний
+                {s?.title}
               </h1>
-              <p className="text-white/80 text-xl mb-4 max-w-2xl">
-                Для предпринимателей, руководителей и амбициозных специалистов, которые знают чего хотят, но что-то мешает.
-              </p>
-              <p className="text-white/50 text-lg" style={{ fontFamily: 'Georgia, serif' }}>
-                Ясность мышления — фундамент правильных решений
-              </p>
+              <p className="text-white/80 text-xl mb-4 max-w-2xl">{s?.subtitle}</p>
+              {s?.hero_quote && (
+                <p className="text-white/50 text-lg" style={{ fontFamily: 'Georgia, serif' }}>{s.hero_quote}</p>
+              )}
             </div>
             <div className="flex-shrink-0">
               <div className="relative w-56 h-72 md:w-64 md:h-80 rounded-2xl overflow-hidden shadow-2xl">
-                <Image
-                  src="/images/generated/coaching-focus.jpg"
-                  alt="Сопровождение бизнес-лидеров"
-                  fill
-                  className="object-cover object-top"
-                  sizes="(max-width: 768px) 224px, 256px"
-                />
+                <Image src="/images/generated/coaching-focus.jpg" alt="Сопровождение бизнес-лидеров" fill className="object-cover object-top" sizes="(max-width: 768px) 224px, 256px" />
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Отличие от терапии */}
       <Section bg="bg-brand-bg">
         <div className="max-w-3xl mx-auto">
           <Card className="p-8 border-l-4 border-brand-gold">
-            <h2 className="text-xl font-bold text-brand-dark mb-4">Чем сопровождение отличается от терапии?</h2>
+            <h2 className="text-xl font-bold text-brand-dark mb-4">{s?.comparison_title || 'Чем сопровождение отличается от терапии?'}</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 text-sm">
               <div>
-                <div className="font-semibold text-brand-primary mb-2">Сопровождение лидеров</div>
+                <div className="font-semibold text-brand-primary mb-2">{s?.comparison_coaching_title || 'Сопровождение лидеров'}</div>
                 <ul className="space-y-1.5 text-brand-dark/70">
-                  <li>→ Фокус на целях и стратегии</li>
-                  <li>→ Конкретные задачи и сроки</li>
-                  <li>→ Работа с ресурсами и потенциалом</li>
-                  <li>→ Подходит тем, кто готов к действиям</li>
+                  {compCoachingItems.map((item, i) => (<li key={i}>→ {item}</li>))}
                 </ul>
               </div>
               <div>
-                <div className="font-semibold text-brand-accent mb-2">Психотерапия</div>
+                <div className="font-semibold text-brand-accent mb-2">{s?.comparison_therapy_title || 'Психотерапия'}</div>
                 <ul className="space-y-1.5 text-brand-dark/70">
-                  <li>→ Работа с внутренними переживаниями</li>
-                  <li>→ Глубинные паттерны и эмоции</li>
-                  <li>→ Без привязки к бизнес-задачам</li>
-                  <li>→ Подходит, когда нужно разобраться в себе</li>
+                  {compTherapyItems.map((item, i) => (<li key={i}>→ {item}</li>))}
                 </ul>
               </div>
             </div>
@@ -81,13 +72,12 @@ export default function KouchingPage() {
         </div>
       </Section>
 
-      {/* Это для вас, если... */}
       <Section bg="bg-white">
         <div className="text-center mb-10">
           <h2 className="text-2xl md:text-3xl font-bold text-brand-dark">Это для вас, если...</h2>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {s.pains.map((pain, i) => (
+          {pains.map((pain, i) => (
             <div key={i} className="flex items-start gap-3 p-5 bg-brand-bg rounded-xl shadow-[var(--shadow-card)]">
               <span className="text-brand-gold text-xl mt-0.5 flex-shrink-0">✓</span>
               <span className="text-brand-dark/80">{pain}</span>
@@ -96,18 +86,15 @@ export default function KouchingPage() {
         </div>
       </Section>
 
-      {/* Как проходит работа */}
       <Section bg="bg-brand-bg">
         <div className="text-center mb-10">
           <h2 className="text-2xl md:text-3xl font-bold text-brand-dark">Как проходит работа</h2>
           <p className="text-brand-muted mt-2">Чёткая структура — чёткий результат</p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {s.steps.map(step => (
-            <Card key={step.n} className="text-center">
-              <div className="w-12 h-12 rounded-full bg-brand-primary/10 flex items-center justify-center text-brand-primary font-bold text-xl mx-auto mb-4">
-                {step.n}
-              </div>
+          {steps.map((step, i) => (
+            <Card key={i} className="text-center">
+              <div className="w-12 h-12 rounded-full bg-brand-primary/10 flex items-center justify-center text-brand-primary font-bold text-xl mx-auto mb-4">{i + 1}</div>
               <h3 className="text-lg font-bold text-brand-dark mb-2">{step.title}</h3>
               <p className="text-brand-dark/70 text-sm leading-relaxed">{step.desc}</p>
             </Card>
@@ -115,13 +102,12 @@ export default function KouchingPage() {
         </div>
       </Section>
 
-      {/* Результаты */}
       <Section bg="bg-white">
         <div className="text-center mb-10">
           <h2 className="text-2xl md:text-3xl font-bold text-brand-dark">Что изменится</h2>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-3xl mx-auto">
-          {s.results.map((result, i) => (
+          {results.map((result, i) => (
             <div key={i} className="flex items-start gap-3 p-4 bg-brand-bg rounded-xl shadow-[var(--shadow-card)]">
               <span className="text-brand-accent text-lg flex-shrink-0">→</span>
               <span className="text-brand-dark">{result}</span>
@@ -130,18 +116,16 @@ export default function KouchingPage() {
         </div>
       </Section>
 
-      {/* Формат */}
       <Section bg="bg-brand-bg">
         <div className="max-w-2xl mx-auto text-center">
           <h2 className="text-2xl font-bold text-brand-dark mb-6">Формат и стоимость</h2>
           <div className="p-6 bg-white rounded-xl shadow-[var(--shadow-card)] text-left">
-            <p className="text-brand-dark/70 mb-2"><span className="font-semibold text-brand-dark">Формат:</span> {s.format}</p>
-            <p className="text-brand-dark/70"><span className="font-semibold text-brand-dark">Стоимость:</span> {s.price}</p>
+            <p className="text-brand-dark/70 mb-2"><span className="font-semibold text-brand-dark">Формат:</span> {s?.format}</p>
+            <p className="text-brand-dark/70"><span className="font-semibold text-brand-dark">Стоимость:</span> {s?.price}</p>
           </div>
         </div>
       </Section>
 
-      {/* Testimonials */}
       {relatedTestimonials.length > 0 && (
         <Section bg="bg-white">
           <div className="text-center mb-8">
@@ -149,11 +133,9 @@ export default function KouchingPage() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
             {relatedTestimonials.map(t => (
-              <Card key={t.id}>
+              <Card key={t.slug}>
                 <div className="flex items-center gap-3 mb-3">
-                  <div className="w-10 h-10 rounded-full bg-brand-primary/10 flex items-center justify-center text-brand-primary font-bold">
-                    {t.name.charAt(0)}
-                  </div>
+                  <div className="w-10 h-10 rounded-full bg-brand-primary/10 flex items-center justify-center text-brand-primary font-bold">{t.name.charAt(0)}</div>
                   <div>
                     <div className="font-semibold text-brand-dark text-sm">{t.name}</div>
                     <div className="text-brand-muted text-xs">{t.role}</div>
@@ -167,11 +149,7 @@ export default function KouchingPage() {
         </Section>
       )}
 
-      <CtaBlock
-        title="Готовы двигаться к цели?"
-        subtitle="Первые 15 минут — бесплатно. Расскажите о своей задаче, и мы поймём, как я могу помочь."
-        buttonText="Записаться на сессию"
-      />
+      <CtaBlock title={s?.cta_title} subtitle={s?.cta_subtitle} buttonText={s?.cta_button} />
     </>
   )
 }

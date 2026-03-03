@@ -1,3 +1,62 @@
+hero_badge: Психолог-консультант
 hero_tagline: "Понять себя. Построить свой маршрут."
 hero_subtitle: Психотерапия, профнавигация и сопровождение лидеров — офлайн и онлайн
 hero_cta: Записаться на бесплатную консультацию
+hero_cta2: Пройти тест
+hero_stats: "18+ лет практики · 500+ клиентов · ВШЭ, РГСУ, ВЕИП"
+trust_items:
+  - "18+ лет практики"
+  - "500+ клиентов"
+  - "ВШЭ · РГСУ · ВЕИП"
+trust_media:
+  - name: Коммерсантъ
+    url: "https://www.kommersant.ru/doc/8440058"
+  - name: Мир 24
+    url: "https://mir24.tv/articles/16502677"
+  - name: Russia Today
+    url: ""
+  - name: RuNews24
+    url: ""
+pains_title: "Вы здесь, потому что..."
+pains_subtitle: Нажмите на то, что откликается — и узнайте, как я могу помочь
+pains:
+  - emoji: "😰"
+    text: Тревога и страхи мешают жить
+    href: /psihoterapiya/
+  - emoji: "😔"
+    text: Усталость, апатия, нет сил
+    href: /psihoterapiya/
+  - emoji: "💼"
+    text: Не знаю куда двигаться в карьере
+    href: /karyernoe-konsultirovanie/
+  - emoji: "👶"
+    text: Ребёнок ведёт себя непонятно
+    href: /psihoterapiya/
+  - emoji: "⚡"
+    text: Конфликты в отношениях или на работе
+    href: /psihoterapiya/
+  - emoji: "🚀"
+    text: Хочу расти, но что-то мешает
+    href: /biznes-kouching/
+services_title: Направления работы
+services_subtitle: Выберите то, что вам сейчас нужно
+services:
+  - icon: "🧠"
+    title: Психотерапия
+    shortDesc: Помогу справиться с тревогой, депрессией, выгоранием и трудностями в отношениях.
+    slug: psihoterapiya
+  - icon: "🎯"
+    title: Профнавигация
+    shortDesc: Профессиональная навигация для взрослых и профориентация для подростков.
+    slug: karyernoe-konsultirovanie
+  - icon: "🚀"
+    title: Сопровождение бизнес-лидеров
+    shortDesc: Индивидуальное сопровождение для предпринимателей и руководителей. Достигайте целей без лишних колебаний.
+    slug: biznes-kouching
+testimonials_title: Истории клиентов
+testimonials_subtitle: Реальные результаты реальных людей
+quiz_title: Не знаете с чего начать?
+quiz_subtitle: Пройдите тест — 5 вопросов, и вы получите персональную рекомендацию
+cta_title: Первые 15 минут — бесплатно. Просто напишите.
+cta_subtitle: Расскажите о своём запросе — и мы найдём подходящий формат работы.
+cta_button: Записаться

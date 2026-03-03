@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import Image from 'next/image'
-import { getAllPosts } from '@/lib/blog'
+import { getAllBlogPosts } from '@/lib/content'
 import { Section } from '@/components/ui/Section'
 import { Card } from '@/components/ui/Card'
 import { Badge } from '@/components/ui/Badge'
@@ -22,8 +22,8 @@ const categoryColors: Record<string, 'primary' | 'accent' | 'gold'> = {
   'Самопознание': 'accent',
 }
 
-export default function BlogPage() {
-  const posts = getAllPosts()
+export default async function BlogPage() {
+  const posts = await getAllBlogPosts()
 
   return (
     <>
@@ -31,23 +31,13 @@ export default function BlogPage() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row items-center gap-10 md:gap-14">
             <div className="flex-1 text-center md:text-left">
-              <span className="text-brand-gold text-sm font-semibold uppercase tracking-widest mb-4 block">
-                Блог
-              </span>
-              <h1 className="text-4xl md:text-5xl font-bold text-white mb-4" style={{ fontFamily: 'Georgia, serif' }}>
-                Статьи о психологии
-              </h1>
+              <span className="text-brand-gold text-sm font-semibold uppercase tracking-widest mb-4 block">Блог</span>
+              <h1 className="text-4xl md:text-5xl font-bold text-white mb-4" style={{ fontFamily: 'Georgia, serif' }}>Статьи о психологии</h1>
               <p className="text-white/70 text-xl">Практичные советы и ответы на частые вопросы</p>
             </div>
             <div className="flex-shrink-0">
               <div className="relative w-56 h-72 md:w-64 md:h-80 rounded-2xl overflow-hidden shadow-2xl">
-                <Image
-                  src="/images/blog/blog-hero.jpg"
-                  alt="Блог Светланы Поповой"
-                  fill
-                  className="object-cover object-top"
-                  sizes="(max-width: 768px) 224px, 256px"
-                />
+                <Image src="/images/blog/blog-hero.jpg" alt="Блог Светланы Поповой" fill className="object-cover object-top" sizes="(max-width: 768px) 224px, 256px" />
               </div>
             </div>
           </div>
@@ -56,32 +46,21 @@ export default function BlogPage() {
 
       <Section bg="bg-brand-bg">
         {posts.length === 0 ? (
-          <div className="text-center text-brand-muted py-16">
-            Статьи скоро появятся
-          </div>
+          <div className="text-center text-brand-muted py-16">Статьи скоро появятся</div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {posts.map(post => (
               <Card key={post.slug} className="flex flex-col hover:shadow-[var(--shadow-hover)]">
                 <div className="mb-3">
-                  <Badge color={categoryColors[post.category] || 'primary'}>
-                    {post.category}
-                  </Badge>
+                  <Badge color={categoryColors[post.category ?? ''] || 'primary'}>{post.category}</Badge>
                 </div>
                 <h2 className="text-lg font-bold text-brand-dark mb-3 flex-1 leading-snug">
-                  <Link href={`/blog/${post.slug}/`} className="hover:text-brand-primary transition-colors">
-                    {post.title}
-                  </Link>
+                  <Link href={`/blog/${post.slug}/`} className="hover:text-brand-primary transition-colors">{post.title}</Link>
                 </h2>
                 <p className="text-brand-dark/60 text-sm leading-relaxed mb-4">{post.excerpt}</p>
                 <div className="flex items-center justify-between mt-auto">
-                  <span className="text-brand-muted text-xs">{formatDate(post.date)}</span>
-                  <Link
-                    href={`/blog/${post.slug}/`}
-                    className="text-brand-primary text-sm font-medium hover:underline"
-                  >
-                    Читать →
-                  </Link>
+                  <span className="text-brand-muted text-xs">{formatDate(post.date ?? '')}</span>
+                  <Link href={`/blog/${post.slug}/`} className="text-brand-primary text-sm font-medium hover:underline">Читать →</Link>
                 </div>
               </Card>
             ))}

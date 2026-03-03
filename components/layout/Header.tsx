@@ -3,17 +3,14 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
-const navLinks = [
-  { href: '/psihoterapiya/', label: 'Психотерапия' },
-  { href: '/karyernoe-konsultirovanie/', label: 'Профнавигация' },
-  { href: '/biznes-kouching/', label: 'Лидерство' },
-  { href: '/ob-mne/', label: 'Обо мне' },
-  { href: '/otzyvy/', label: 'Отзывы' },
-  { href: '/blog/', label: 'Блог' },
-  { href: '/faq/', label: 'FAQ' },
-]
+interface HeaderProps {
+  siteName: string
+  links: readonly { href: string; label: string }[]
+  ctaText: string
+  ctaHref: string
+}
 
-export function Header() {
+export function Header({ siteName, links, ctaText, ctaHref }: HeaderProps) {
   const [mobileOpen, setMobileOpen] = useState(false)
   const pathname = usePathname()
 
@@ -23,12 +20,12 @@ export function Header() {
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
           <Link href="/" className="text-brand-dark font-bold text-lg md:text-xl" style={{ fontFamily: 'Georgia, serif' }}>
-            Светлана Попова
+            {siteName}
           </Link>
 
           {/* Desktop nav */}
           <nav className="hidden lg:flex items-center gap-1">
-            {navLinks.map(link => (
+            {links.map(link => (
               <Link
                 key={link.href}
                 href={link.href}
@@ -46,10 +43,10 @@ export function Header() {
           {/* Desktop CTA */}
           <div className="hidden lg:block">
             <Link
-              href="/zapis/"
+              href={ctaHref}
               className="inline-flex items-center justify-center rounded-lg px-5 py-2.5 font-semibold text-sm bg-brand-accent text-white hover:bg-brand-accent/90 transition-all duration-200"
             >
-              Записаться
+              {ctaText}
             </Link>
           </div>
 
@@ -71,7 +68,7 @@ export function Header() {
         {mobileOpen && (
           <div className="lg:hidden pb-4 border-t border-brand-light/50">
             <nav className="flex flex-col gap-1 pt-4">
-              {navLinks.map(link => (
+              {links.map(link => (
                 <Link
                   key={link.href}
                   href={link.href}
@@ -82,11 +79,11 @@ export function Header() {
                 </Link>
               ))}
               <Link
-                href="/zapis/"
+                href={ctaHref}
                 className="mt-2 inline-flex items-center justify-center rounded-lg px-5 py-3 font-semibold bg-brand-accent text-white hover:bg-brand-accent/90 transition-all"
                 onClick={() => setMobileOpen(false)}
               >
-                Записаться
+                {ctaText}
               </Link>
             </nav>
           </div>
