@@ -8,6 +8,16 @@ const inter = Inter({ subsets: ['latin', 'cyrillic'], display: 'swap' })
 export const metadata: Metadata = {
   title: 'Психолог — Светлана Попова',
   description: 'Психотерапия, профнавигация и сопровождение бизнес-лидеров. 18+ лет практики. Первая сессия бесплатно.',
+  metadataBase: new URL('https://toselfness.com'),
+  openGraph: {
+    title: 'Психолог — Светлана Попова',
+    description: 'Психотерапия, профнавигация и сопровождение бизнес-лидеров. 18+ лет практики. Первая сессия бесплатно.',
+    url: 'https://toselfness.com',
+    siteName: 'Светлана Попова — психолог',
+    images: [{ url: '/images/og/og-main.jpg', width: 1200, height: 630 }],
+    locale: 'ru_RU',
+    type: 'website',
+  },
 }
 
 const jsonLd = {
