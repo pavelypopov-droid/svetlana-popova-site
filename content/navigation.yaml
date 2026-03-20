@@ -43,4 +43,7 @@ social_links:
   - platform: telegram
     url: "https://t.me/svet_psv_uz"
     label: Telegram
+  - platform: max
+    url: "https://max.ru/79035698984"
+    label: MAX
 copyright: "Светлана Попова. Все права защищены."

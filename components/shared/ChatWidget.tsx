@@ -210,7 +210,7 @@ export function ChatWidget() {
             setIsOpen(true)
             setShowBubble(false)
           }}
-          className="fixed bottom-6 right-24 z-50 w-14 h-14 rounded-full shadow-lg flex items-center justify-center transition-all duration-300 hover:scale-110 bg-brand-primary text-white group"
+          className="fixed bottom-6 right-[168px] z-50 w-14 h-14 rounded-full shadow-lg flex items-center justify-center transition-all duration-300 hover:scale-110 bg-brand-primary text-white group"
           title="Задать вопрос"
         >
           <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
