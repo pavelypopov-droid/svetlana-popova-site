@@ -1,6 +1,7 @@
 import { Header } from '@/components/layout/Header'
 import { Footer } from '@/components/layout/Footer'
 import { WhatsAppButton } from '@/components/shared/WhatsAppButton'
+import { ChatWidget } from '@/components/shared/ChatWidget'
 import { getNavigation, getSettings } from '@/lib/content'
 
 export default async function SiteLayout({ children }: { children: React.ReactNode }) {
@@ -23,6 +24,7 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
         copyright={nav?.copyright || 'Светлана Попова. Все права защищены.'}
       />
       <WhatsAppButton number={settings?.contacts?.whatsapp || '79035698984'} />
+      <ChatWidget />
     </>
   )
 }
