@@ -139,6 +139,7 @@ export default config({
               options: [
                 { label: 'WhatsApp', value: 'whatsapp' },
                 { label: 'Telegram', value: 'telegram' },
+                { label: 'MAX', value: 'max' },
                 { label: 'Instagram', value: 'instagram' },
                 { label: 'VK', value: 'vk' },
               ],
