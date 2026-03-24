@@ -2,6 +2,7 @@
 import { useState } from 'react'
 import { Section } from '@/components/ui/Section'
 import { Card } from '@/components/ui/Card'
+import { TestimonialForm } from '@/components/shared/TestimonialForm'
 
 interface Testimonial {
   slug: string
@@ -23,11 +24,12 @@ const filters: { value: string; label: string }[] = [
 
 export function TestimonialsClient({ testimonials }: { testimonials: readonly Testimonial[] }) {
   const [active, setActive] = useState('all')
+  const [formOpen, setFormOpen] = useState(false)
   const filtered = active === 'all' ? testimonials : testimonials.filter(t => t.service === active)
 
   return (
     <Section bg="bg-brand-bg">
-      <div className="flex flex-wrap gap-3 justify-center mb-10">
+      <div className="flex flex-wrap items-center gap-3 justify-center mb-10">
         {filters.map(f => (
           <button
             key={f.value}
@@ -41,7 +43,15 @@ export function TestimonialsClient({ testimonials }: { testimonials: readonly Te
             {f.label}
           </button>
         ))}
+        <button
+          onClick={() => setFormOpen(true)}
+          className="px-5 py-2 rounded-full font-medium text-sm transition-all cursor-pointer bg-brand-accent text-white hover:bg-brand-accent/90 shadow-sm"
+        >
+          + Оставить отзыв
+        </button>
       </div>
+
+      <TestimonialForm open={formOpen} onClose={() => setFormOpen(false)} />
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {filtered.map(t => (
           <Card key={t.slug} accent className="flex flex-col">

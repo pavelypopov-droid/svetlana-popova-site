@@ -47,6 +47,16 @@ export default config({
       format: { data: 'yaml' },
       schema: {
         name: fields.slug({ name: { label: 'Имя клиента' } }),
+        status: fields.select({
+          label: 'Статус модерации',
+          description: 'Только одобренные отзывы отображаются на сайте',
+          options: [
+            { label: '🟡 На проверке', value: 'pending' },
+            { label: '🟢 Одобрен', value: 'approved' },
+            { label: '🔴 Отклонён', value: 'rejected' },
+          ],
+          defaultValue: 'approved',
+        }),
         age: fields.number({ label: 'Возраст', validation: { min: 10, max: 100 } }),
         role: fields.text({ label: 'Роль / профессия' }),
         service: fields.select({

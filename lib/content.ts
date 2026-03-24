@@ -55,7 +55,9 @@ export async function getAllTestimonials() {
       return item ? { slug, ...item } : null
     })
   )
-  return items.filter((item): item is NonNullable<typeof item> => item !== null)
+  return items
+    .filter((item): item is NonNullable<typeof item> => item !== null)
+    .filter((item) => (item.status ?? 'approved') === 'approved')
 }
 
 export async function getAllFaq() {
