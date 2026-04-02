@@ -15,6 +15,8 @@ trust_media:
     url: "https://mir24.tv/articles/16502677"
   - name: АиФ
     url: "https://kazan.aif.ru/view/society/6080773?key=c83e8acd8e6a06fa97946dd8b433126c"
+  - name: Деловая газета
+    url: "https://www.dglo.ru/15452"
   - name: Russia Today
     url: ""
   - name: RuNews24
