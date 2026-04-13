@@ -51,7 +51,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Сообщения обязательны' }, { status: 400 })
     }
 
-    if (messages.filter((m) => m.role === 'user').length > 15) {
+    if (messages.filter((m) => m.role === 'user').length > 3) {
       return NextResponse.json({
         message:
           'Мы уже хорошо пообщались! Для более глубокой работы я рекомендую записаться к Светлане — первые 15 минут бесплатно. Вы можете сделать это на странице toselfness.com/zapis или написать в WhatsApp: +79035698984',

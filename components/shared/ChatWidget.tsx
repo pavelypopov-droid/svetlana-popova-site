@@ -10,7 +10,7 @@ interface Message {
 const GREETING =
   'Здравствуйте! Я — виртуальный помощник Светланы Поповой. Расскажите, что вас беспокоит, и я постараюсь помочь разобраться. Если нужна более глубокая работа — подскажу, как записаться к Светлане.'
 
-const MAX_MESSAGES = 15
+const MAX_MESSAGES = 3
 
 export function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false)
