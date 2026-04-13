@@ -12,6 +12,13 @@ interface Testimonial {
   request: string
   result: string
   text: string
+  createdAt?: string
+}
+
+function formatDate(iso: string | undefined): string {
+  if (!iso) return '—'
+  const d = new Date(iso)
+  return d.toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' })
 }
 
 const SERVICE_LABELS: Record<string, string> = {
@@ -167,14 +174,17 @@ export default function AdminPage() {
                 {t.age && <span style={styles.meta}>, {t.age} лет</span>}
                 {t.role && <span style={styles.meta}> — {t.role}</span>}
               </div>
-              <span
-                style={{
-                  ...styles.badge,
-                  background: STATUS_COLORS[t.status] || '#ccc',
-                }}
-              >
-                {STATUS_LABELS[t.status] || t.status}
-              </span>
+              <div style={styles.headerRight}>
+                <span style={styles.date}>{formatDate(t.createdAt)}</span>
+                <span
+                  style={{
+                    ...styles.badge,
+                    background: STATUS_COLORS[t.status] || '#ccc',
+                  }}
+                >
+                  {STATUS_LABELS[t.status] || t.status}
+                </span>
+              </div>
             </div>
 
             <div style={styles.tags}>
@@ -349,6 +359,16 @@ const styles: Record<string, React.CSSProperties> = {
   meta: {
     fontSize: '15px',
     color: '#666',
+  },
+  headerRight: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '10px',
+  },
+  date: {
+    fontSize: '13px',
+    color: '#999',
+    whiteSpace: 'nowrap',
   },
   badge: {
     padding: '4px 12px',

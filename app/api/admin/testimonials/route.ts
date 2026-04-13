@@ -9,6 +9,19 @@ interface GitHubFile {
   download_url: string
 }
 
+function extractDateFromSlug(slug: string): string | null {
+  // Slugs from form submissions have base36 timestamp: "name-mn7csrhj"
+  const lastHyphen = slug.lastIndexOf('-')
+  if (lastHyphen === -1) return null
+  const suffix = slug.slice(lastHyphen + 1)
+  // base36 timestamp should be 7-9 chars, all alphanumeric
+  if (!/^[a-z0-9]{7,9}$/.test(suffix)) return null
+  const ts = parseInt(suffix, 36)
+  // Sanity check: should be a valid date after 2024
+  if (ts < 1700000000000 || ts > 2000000000000) return null
+  return new Date(ts).toISOString()
+}
+
 function parseYaml(content: string): Record<string, string> {
   const result: Record<string, string> = {}
   let currentKey = ''
@@ -68,7 +81,8 @@ export async function GET() {
       const content = await res.text()
       const data = parseYaml(content)
       const slug = file.name.replace('.yaml', '')
-      return { slug, ...data } as Record<string, string> & { slug: string }
+      const createdAt = extractDateFromSlug(slug)
+      return { slug, createdAt: createdAt || '', ...data } as Record<string, string> & { slug: string }
     })
   )
 
@@ -78,7 +92,12 @@ export async function GET() {
       const order: Record<string, number> = { pending: 0, approved: 1, rejected: 2 }
       const aStatus = (a as Record<string, string>).status ?? 'approved'
       const bStatus = (b as Record<string, string>).status ?? 'approved'
-      return (order[aStatus] ?? 1) - (order[bStatus] ?? 1)
+      const statusDiff = (order[aStatus] ?? 1) - (order[bStatus] ?? 1)
+      if (statusDiff !== 0) return statusDiff
+      // Within same status group, newest first
+      const aDate = (a as Record<string, string>).createdAt || ''
+      const bDate = (b as Record<string, string>).createdAt || ''
+      return bDate.localeCompare(aDate)
     })
 
   return NextResponse.json(result)
