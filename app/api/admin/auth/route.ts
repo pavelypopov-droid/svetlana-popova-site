@@ -30,7 +30,15 @@ export async function POST(request: Request) {
   }
 
   if (login !== expectedLogin || password !== expectedPassword) {
-    return NextResponse.json({ error: 'Неверный логин или пароль' }, { status: 401 })
+    return NextResponse.json({
+      error: 'Неверный логин или пароль',
+      debug: {
+        hasLogin: !!expectedLogin,
+        hasPassword: !!expectedPassword,
+        loginLength: expectedLogin?.length,
+        passwordLength: expectedPassword?.length,
+      },
+    }, { status: 401 })
   }
 
   const token = makeToken(login, password)
