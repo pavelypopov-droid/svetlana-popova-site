@@ -68,14 +68,18 @@ export function ChatWidget() {
         body: JSON.stringify({ messages: newMessages.slice(1) }), // skip greeting
       })
 
-      if (!res.ok) {
-        const data = await res.json()
-        if (data.limitReached) {
+      // Ответ про исчерпанный лимит приходит обычным JSON, а не потоком.
+      const isJson = res.headers.get('content-type')?.includes('application/json')
+      if (isJson) {
+        const data = await res.json().catch(() => ({}))
+        if (data.limitReached && data.message) {
           setMessages([...newMessages, { role: 'assistant', content: data.message }])
           return
         }
-        throw new Error(data.error)
+        throw new Error(data.error || 'Пустой ответ помощника')
       }
+
+      if (!res.ok) throw new Error('Помощник не ответил')
 
       // Stream response
       const reader = res.body?.getReader()
@@ -87,44 +91,75 @@ export function ChatWidget() {
       const decoder = new TextDecoder()
       let buffer = ''
 
-      while (true) {
-        const { done, value } = await reader.read()
-        if (done) break
+      try {
+        while (true) {
+          const { done, value } = await reader.read()
+          if (done) break
 
-        buffer += decoder.decode(value, { stream: true })
-        const lines = buffer.split('\n')
-        buffer = lines.pop() || ''
+          buffer += decoder.decode(value, { stream: true })
+          const lines = buffer.split('\n')
+          buffer = lines.pop() || ''
 
-        for (const line of lines) {
-          const trimmed = line.trim()
-          if (!trimmed || !trimmed.startsWith('data: ')) continue
-          const data = trimmed.slice(6)
-          if (data === '[DONE]') continue
+          for (const line of lines) {
+            const trimmed = line.trim()
+            if (!trimmed || !trimmed.startsWith('data: ')) continue
+            const data = trimmed.slice(6)
+            if (data === '[DONE]') continue
 
-          try {
-            const parsed = JSON.parse(data)
-            if (parsed.content) {
-              assistantContent += parsed.content
-              setMessages((prev) => {
-                const updated = [...prev]
-                updated[updated.length - 1] = {
-                  role: 'assistant',
-                  content: assistantContent,
-                }
-                return updated
-              })
+            try {
+              const parsed = JSON.parse(data)
+              if (parsed.content) {
+                assistantContent += parsed.content
+                setMessages((prev) => {
+                  const updated = [...prev]
+                  updated[updated.length - 1] = {
+                    role: 'assistant',
+                    content: assistantContent,
+                  }
+                  return updated
+                })
+              }
+            } catch {
+              // skip
             }
-          } catch {
-            // skip
           }
         }
+      } catch (streamErr) {
+        // Связь оборвалась на середине. Уже написанное не выбрасываем.
+        if (!assistantContent) throw streamErr
+        setMessages([
+          ...newMessages,
+          {
+            role: 'assistant',
+            content:
+              assistantContent +
+              '\n\n(связь прервалась — напишите ещё раз, если ответ обрубился)',
+          },
+        ])
+        return
       }
-    } catch {
+
+      // Поток закрылся, но не принёс ни слова — считаем это сбоем.
+      if (!assistantContent) {
+        setMessages([
+          ...newMessages,
+          {
+            role: 'assistant',
+            content:
+              'Помощник не успел ответить. Попробуйте ещё раз или напишите Светлане в WhatsApp: +79035698984',
+          },
+        ])
+      }
+    } catch (err) {
+      console.error('[chat] Ошибка:', err)
       setMessages([
         ...newMessages,
         {
           role: 'assistant',
-          content: 'Извините, произошла ошибка. Попробуйте ещё раз или напишите Светлане в WhatsApp: +79035698984',
+          content:
+            err instanceof Error && err.message.length > 12
+              ? err.message
+              : 'Не получилось связаться с помощником. Попробуйте ещё раз или напишите Светлане в WhatsApp: +79035698984',
         },
       ])
     } finally {

@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server'
+import { sendEmail, sendTelegram } from '@/lib/notify'
 
 interface ChatMessage {
   role: 'user' | 'assistant'
@@ -61,51 +62,9 @@ function formatTelegramMessage(payload: TranscriptPayload): string {
   if (contactEmail) lines.push(`✉️ ${contactEmail}`)
   lines.push(`📊 ${userMessages} сообщений от посетителя`)
   lines.push(``)
-  lines.push(`Полная переписка отправлена на почту.`)
+  lines.push(`Полная переписка отправлена на почту psv@iofm.ru.`)
 
   return lines.join('\n')
-}
-
-async function sendEmail(payload: TranscriptPayload): Promise<void> {
-  const apiKey = process.env.RESEND_API_KEY
-  if (!apiKey) {
-    console.log('RESEND_API_KEY not set, transcript:', formatTranscript(payload))
-    return
-  }
-
-  const subject = payload.contactName
-    ? `Переписка с ИИ: ${payload.contactName}`
-    : `Переписка с ИИ-помощником (анонимный посетитель)`
-
-  await fetch('https://api.resend.com/emails', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${apiKey}`,
-    },
-    body: JSON.stringify({
-      from: 'Светлана Попова <noreply@toselfness.com>',
-      to: ['psv@iofm.ru'],
-      subject,
-      text: formatTranscript(payload),
-    }),
-  })
-}
-
-async function sendTelegram(payload: TranscriptPayload): Promise<void> {
-  const token = process.env.TELEGRAM_BOT_TOKEN
-  const chatId = process.env.TELEGRAM_CHAT_ID
-  if (!token || !chatId) return
-
-  await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      chat_id: chatId,
-      text: formatTelegramMessage(payload),
-      parse_mode: 'HTML',
-    }),
-  })
 }
 
 export async function POST(request: Request) {
@@ -120,7 +79,19 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Нет сообщений' }, { status: 400 })
     }
 
-    await Promise.allSettled([sendEmail(payload), sendTelegram(payload)])
+    const subject = payload.contactName
+      ? `Переписка с ИИ: ${payload.contactName}`
+      : `Переписка с ИИ-помощником (анонимный посетитель)`
+
+    const [emailSent, telegramSent] = await Promise.all([
+      sendEmail(subject, formatTranscript(payload)),
+      sendTelegram(formatTelegramMessage(payload)),
+    ])
+
+    if (!emailSent && !telegramSent) {
+      console.error('[transcript] Переписка никуда не ушла:', formatTranscript(payload))
+      return NextResponse.json({ error: 'Не удалось отправить переписку' }, { status: 500 })
+    }
 
     return NextResponse.json({ ok: true })
   } catch {

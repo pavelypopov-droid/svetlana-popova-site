@@ -38,6 +38,19 @@ const SYSTEM_PROMPT = `Ты — виртуальный помощник на с�
 
 Отвечай на русском языке.`
 
+const MAX_USER_MESSAGES = 3
+
+// Последний ответ не должен обрываться вопросом, на который человеку уже не ответить.
+const FINAL_TURN_HINT = `
+
+ВАЖНО: это последний твой ответ в этом диалоге — поле ввода после него закроется.
+Не задавай вопросов. Коротко отрази то, что человек рассказал, скажи, что с этим можно
+поработать, и предложи записаться к Светлане: первые 15 минут бесплатно, кнопка «Записаться»
+прямо под перепиской, либо WhatsApp +79035698984.`
+
+// Стриминг длинного ответа не должен упираться в лимит функции.
+export const maxDuration = 30
+
 interface ChatMessage {
   role: 'user' | 'assistant'
   content: string
@@ -51,7 +64,9 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Сообщения обязательны' }, { status: 400 })
     }
 
-    if (messages.filter((m) => m.role === 'user').length > 3) {
+    const userMessages = messages.filter((m) => m.role === 'user').length
+
+    if (userMessages > MAX_USER_MESSAGES) {
       return NextResponse.json({
         message:
           'Мы уже хорошо пообщались! Для более глубокой работы я рекомендую записаться к Светлане — первые 15 минут бесплатно. Вы можете сделать это на странице toselfness.com/zapis или написать в WhatsApp: +79035698984',
@@ -61,8 +76,15 @@ export async function POST(request: Request) {
 
     const apiKey = process.env.OPENAI_API_KEY
     if (!apiKey) {
-      return NextResponse.json({ error: 'Сервис временно недоступен' }, { status: 503 })
+      console.error('[chat] OPENAI_API_KEY не задан')
+      return NextResponse.json(
+        { error: 'Помощник сейчас недоступен. Напишите Светлане в WhatsApp: +79035698984' },
+        { status: 503 }
+      )
     }
+
+    const systemPrompt =
+      userMessages >= MAX_USER_MESSAGES ? SYSTEM_PROMPT + FINAL_TURN_HINT : SYSTEM_PROMPT
 
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
@@ -72,7 +94,7 @@ export async function POST(request: Request) {
       },
       body: JSON.stringify({
         model: 'gpt-4o-mini',
-        messages: [{ role: 'system', content: SYSTEM_PROMPT }, ...messages],
+        messages: [{ role: 'system', content: systemPrompt }, ...messages],
         temperature: 0.7,
         max_tokens: 400,
         stream: true,
@@ -80,8 +102,15 @@ export async function POST(request: Request) {
     })
 
     if (!response.ok) {
-      console.error('OpenAI error:', response.status)
-      return NextResponse.json({ error: 'Ошибка генерации ответа' }, { status: 502 })
+      const body = await response.text().catch(() => '')
+      console.error(`[chat] OpenAI ответил ${response.status}: ${body.slice(0, 500)}`)
+      return NextResponse.json(
+        {
+          error:
+            'Помощник сейчас не отвечает. Попробуйте через минуту или напишите Светлане в WhatsApp: +79035698984',
+        },
+        { status: 502 }
+      )
     }
 
     // Stream the response
@@ -123,6 +152,8 @@ export async function POST(request: Request) {
               }
             }
           }
+        } catch (err) {
+          console.error('[chat] Поток от OpenAI оборвался:', err)
         } finally {
           controller.enqueue(encoder.encode('data: [DONE]\n\n'))
           controller.close()
@@ -137,7 +168,14 @@ export async function POST(request: Request) {
         Connection: 'keep-alive',
       },
     })
-  } catch {
-    return NextResponse.json({ error: 'Внутренняя ошибка' }, { status: 500 })
+  } catch (err) {
+    console.error('[chat] Необработанная ошибка:', err)
+    return NextResponse.json(
+      {
+        error:
+          'Что-то пошло не так на нашей стороне. Попробуйте ещё раз или напишите Светлане в WhatsApp: +79035698984',
+      },
+      { status: 500 }
+    )
   }
 }

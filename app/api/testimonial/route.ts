@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server'
+import { sendEmail, sendTelegram } from '@/lib/notify'
 
 interface TestimonialInput {
   name: string
@@ -73,7 +74,7 @@ function toYaml(data: TestimonialInput): string {
 
 async function createFileViaGitHub(slug: string, content: string): Promise<void> {
   const token = process.env.GITHUB_TOKEN
-  if (!token) throw new Error('GITHUB_TOKEN not configured')
+  if (!token) throw new Error('GITHUB_TOKEN не задан в переменных окружения')
 
   const repo = 'pavelypopov-droid/svetlana-popova-site'
   const path = `content/testimonials/${slug}.yaml`
@@ -95,7 +96,11 @@ async function createFileViaGitHub(slug: string, content: string): Promise<void>
 
   if (!res.ok) {
     const err = await res.json().catch(() => ({}))
-    throw new Error(err.message || `GitHub API error: ${res.status}`)
+    const hint =
+      res.status === 401
+        ? ' (похоже, истёк срок жизни GITHUB_TOKEN — нужно выпустить новый и обновить его в Vercel)'
+        : ''
+    throw new Error(`GitHub ответил ${res.status}: ${err.message || 'без пояснения'}${hint}`)
   }
 }
 
@@ -105,39 +110,11 @@ const SERVICE_LABELS: Record<string, string> = {
   coaching: 'Сопровождение',
 }
 
-async function notifyTelegram(data: TestimonialInput): Promise<void> {
-  const token = process.env.TELEGRAM_BOT_TOKEN
-  const chatId = process.env.TELEGRAM_CHAT_ID
-  if (!token || !chatId) return
-
-  const text = [
-    `📝 Новый отзыв на сайте`,
-    ``,
-    `👤 ${data.name}${data.age ? `, ${data.age} лет` : ''}${data.role ? ` (${data.role})` : ''}`,
-    `🎯 Услуга: ${SERVICE_LABELS[data.service] || data.service}`,
-    `📋 Запрос: ${data.request}`,
-    `✅ Результат: ${data.result}`,
-    ``,
-    `💬 «${data.text.slice(0, 200)}${data.text.length > 200 ? '...' : ''}»`,
-    ``,
-    `➡️ Проверьте в CMS: https://toselfness.com/keystatic`,
-  ].join('\n')
-
-  await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ chat_id: chatId, text }),
-  })
-}
-
-async function notifyEmail(data: TestimonialInput): Promise<void> {
-  const apiKey = process.env.RESEND_API_KEY
-  if (!apiKey) return
-
-  const text = [
+function formatTestimonial(data: TestimonialInput, savedToCms: boolean): string {
+  const lines = [
     `Новый отзыв на сайте toselfness.com`,
     ``,
-    `Имя: ${data.name}`,
+    `Имя: ${data.name}${data.age ? `, ${data.age} лет` : ''}${data.role ? ` (${data.role})` : ''}`,
     `Услуга: ${SERVICE_LABELS[data.service] || data.service}`,
     `Запрос: ${data.request}`,
     `Результат: ${data.result}`,
@@ -145,22 +122,18 @@ async function notifyEmail(data: TestimonialInput): Promise<void> {
     `Текст отзыва:`,
     data.text,
     ``,
-    `Проверьте в CMS: https://toselfness.com/keystatic`,
-  ].join('\n')
+  ]
 
-  await fetch('https://api.resend.com/emails', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${apiKey}`,
-    },
-    body: JSON.stringify({
-      from: 'Светлана Попова <noreply@toselfness.com>',
-      to: ['psv@iofm.ru'],
-      subject: `Новый отзыв от ${data.name}`,
-      text,
-    }),
-  })
+  if (savedToCms) {
+    lines.push(`Отзыв ждёт проверки: https://toselfness.com/admin`)
+  } else {
+    lines.push(
+      `ВНИМАНИЕ: сохранить отзыв в CMS не удалось, он есть только в этом письме.`,
+      `Скопируйте текст и добавьте отзыв вручную: https://toselfness.com/keystatic`
+    )
+  }
+
+  return lines.join('\n')
 }
 
 export async function POST(request: Request) {
@@ -185,18 +158,44 @@ export async function POST(request: Request) {
     const timestamp = Date.now().toString(36)
     const slug = `${slugify(data.name)}-${timestamp}`
 
-    // Create YAML file in GitHub
-    const yaml = toYaml(data)
-    await createFileViaGitHub(slug, yaml)
+    // Пробуем сохранить в CMS. Если не вышло — отзыв не теряем, он уйдёт письмом.
+    let savedToCms = true
+    try {
+      await createFileViaGitHub(slug, toYaml(data))
+    } catch (err) {
+      savedToCms = false
+      console.error('Отзыв не сохранён в CMS:', err)
+    }
 
-    // Notify (non-blocking)
-    await Promise.allSettled([notifyTelegram(data), notifyEmail(data)])
+    const subject = savedToCms
+      ? `Новый отзыв от ${data.name}`
+      : `Новый отзыв от ${data.name} — НЕ сохранён в CMS`
+    const body = formatTestimonial(data, savedToCms)
+
+    const [emailSent, telegramSent] = await Promise.all([
+      sendEmail(subject, body),
+      sendTelegram(body),
+    ])
+
+    // Всё легло — только тогда честно говорим человеку, что не получилось.
+    if (!savedToCms && !emailSent && !telegramSent) {
+      return NextResponse.json(
+        {
+          error:
+            'Отзыв не удалось отправить: сайт сейчас не может связаться с почтой. Напишите Светлане в WhatsApp +7 903 569-89-84 — она добавит отзыв вручную.',
+        },
+        { status: 500 }
+      )
+    }
 
     return NextResponse.json({ ok: true })
   } catch (err) {
     console.error('Testimonial submission error:', err)
     return NextResponse.json(
-      { error: 'Не удалось сохранить отзыв. Попробуйте позже.' },
+      {
+        error:
+          'Не удалось сохранить отзыв. Попробуйте ещё раз через пару минут или напишите Светлане в WhatsApp +7 903 569-89-84.',
+      },
       { status: 500 }
     )
   }
