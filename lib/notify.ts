@@ -34,24 +34,34 @@ export async function sendEmail(subject: string, text: string): Promise<boolean>
 /** Сообщение в телеграм. Если бот не настроен — тихо пропускаем, это не ошибка. */
 export async function sendTelegram(text: string): Promise<boolean> {
   const token = process.env.TELEGRAM_BOT_TOKEN
-  const chatId = process.env.TELEGRAM_CHAT_ID
-  if (!token || !chatId) return false
+  const chatIds = (process.env.TELEGRAM_CHAT_ID || '')
+    .split(',')
+    .map((id) => id.trim())
+    .filter(Boolean)
 
-  try {
-    const res = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ chat_id: chatId, text, disable_web_page_preview: true }),
+  if (!token || !chatIds.length) return false
+
+  const results = await Promise.all(
+    chatIds.map(async (chatId) => {
+      try {
+        const res = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ chat_id: chatId, text, disable_web_page_preview: true }),
+        })
+
+        if (!res.ok) {
+          const body = await res.text().catch(() => '')
+          console.error(`[notify] Телеграм ответил ${res.status} для ${chatId}: ${body}`)
+          return false
+        }
+        return true
+      } catch (err) {
+        console.error(`[notify] Не удалось обратиться к телеграму для ${chatId}:`, err)
+        return false
+      }
     })
+  )
 
-    if (!res.ok) {
-      const body = await res.text().catch(() => '')
-      console.error(`[notify] Телеграм ответил ${res.status}: ${body}`)
-      return false
-    }
-    return true
-  } catch (err) {
-    console.error('[notify] Не удалось обратиться к телеграму:', err)
-    return false
-  }
+  return results.some(Boolean)
 }
