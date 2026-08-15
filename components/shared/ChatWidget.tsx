@@ -133,7 +133,7 @@ export function ChatWidget() {
             role: 'assistant',
             content:
               assistantContent +
-              '\n\n(связь прервалась — напишите ещё раз, если ответ обрубился)',
+              '\n\n(связь прервалась, напишите ещё раз, если ответ обрубился)',
           },
         ])
         return

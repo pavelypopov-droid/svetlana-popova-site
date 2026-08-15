@@ -48,6 +48,11 @@ const FINAL_TURN_HINT = `
 поработать, и предложи записаться к Светлане: первые 15 минут бесплатно, кнопка «Записаться»
 прямо под перепиской, либо WhatsApp +79035698984.`
 
+// Модель мелкая и подсказку иногда игнорирует, поэтому концовку дописываем сами.
+const FINAL_TURN_CLOSING = `
+
+Здесь я остановлюсь: дальше полезнее поговорить с живым человеком. Первая встреча со Светланой длится 15 минут и бесплатна, кнопка «Записаться» прямо под перепиской. Или напишите в WhatsApp: +7 903 569-89-84.`
+
 // Стриминг длинного ответа не должен упираться в лимит функции.
 export const maxDuration = 30
 
@@ -83,8 +88,8 @@ export async function POST(request: Request) {
       )
     }
 
-    const systemPrompt =
-      userMessages >= MAX_USER_MESSAGES ? SYSTEM_PROMPT + FINAL_TURN_HINT : SYSTEM_PROMPT
+    const isFinalTurn = userMessages >= MAX_USER_MESSAGES
+    const systemPrompt = isFinalTurn ? SYSTEM_PROMPT + FINAL_TURN_HINT : SYSTEM_PROMPT
 
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
@@ -155,6 +160,11 @@ export async function POST(request: Request) {
         } catch (err) {
           console.error('[chat] Поток от OpenAI оборвался:', err)
         } finally {
+          if (isFinalTurn) {
+            controller.enqueue(
+              encoder.encode(`data: ${JSON.stringify({ content: FINAL_TURN_CLOSING })}\n\n`)
+            )
+          }
           controller.enqueue(encoder.encode('data: [DONE]\n\n'))
           controller.close()
         }
