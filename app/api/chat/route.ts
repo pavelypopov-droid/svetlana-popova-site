@@ -43,15 +43,40 @@ const MAX_USER_MESSAGES = 3
 // Последний ответ не должен обрываться вопросом, на который человеку уже не ответить.
 const FINAL_TURN_HINT = `
 
-ВАЖНО: это последний твой ответ в этом диалоге — поле ввода после него закроется.
-Не задавай вопросов. Коротко отрази то, что человек рассказал, скажи, что с этим можно
-поработать, и предложи записаться к Светлане: первые 15 минут бесплатно, кнопка «Записаться»
-прямо под перепиской, либо WhatsApp +79035698984.`
+ВАЖНО: это твой последний ответ в этом диалоге, поле ввода после него закроется.
+Ответь двумя предложениями: коротко отрази то, что человек рассказал, и скажи, что с этим
+можно поработать. Никаких вопросов, ни одного знака «?». Про запись писать не нужно,
+это будет добавлено после тебя.`
 
-// Модель мелкая и подсказку иногда игнорирует, поэтому концовку дописываем сами.
-const FINAL_TURN_CLOSING = `
+// Последнее слово в диалоге всегда за нами, а не за моделью.
+const FINAL_TURN_CLOSING = `Дальше лучше поговорить со Светланой лично. Первая встреча длится 15 минут и она бесплатная: нажмите кнопку «Записаться» ниже или напишите в WhatsApp +7 903 569-89-84.`
 
-Здесь я остановлюсь: дальше полезнее поговорить с живым человеком. Первая встреча со Светланой длится 15 минут и бесплатна, кнопка «Записаться» прямо под перепиской. Или напишите в WhatsApp: +7 903 569-89-84.`
+/** Отрезает вопросы в конце ответа: отвечать на них человеку будет уже негде. */
+function dropTrailingQuestions(text: string): string {
+  const sentences = text.match(/[^.!?…]+[.!?…]*/g) || []
+  while (sentences.length && /\?\s*$/.test(sentences[sentences.length - 1])) sentences.pop()
+  return sentences.join('').trim()
+}
+
+/** Отдаёт готовый текст тем же потоком, что и обычные ответы, чтобы не менять виджет. */
+function textAsStream(text: string): Response {
+  const encoder = new TextEncoder()
+  const stream = new ReadableStream({
+    start(controller) {
+      controller.enqueue(encoder.encode(`data: ${JSON.stringify({ content: text })}\n\n`))
+      controller.enqueue(encoder.encode('data: [DONE]\n\n'))
+      controller.close()
+    },
+  })
+
+  return new Response(stream, {
+    headers: {
+      'Content-Type': 'text/event-stream',
+      'Cache-Control': 'no-cache',
+      Connection: 'keep-alive',
+    },
+  })
+}
 
 // Стриминг длинного ответа не должен упираться в лимит функции.
 export const maxDuration = 30
@@ -89,7 +114,40 @@ export async function POST(request: Request) {
     }
 
     const isFinalTurn = userMessages >= MAX_USER_MESSAGES
-    const systemPrompt = isFinalTurn ? SYSTEM_PROMPT + FINAL_TURN_HINT : SYSTEM_PROMPT
+
+    // Третье сообщение закрывает разговор: собираем ответ целиком, чтобы снять
+    // повисший вопрос и своими словами отправить человека к Светлане.
+    if (isFinalTurn) {
+      const res = await fetch('https://api.openai.com/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${apiKey}`,
+        },
+        body: JSON.stringify({
+          model: 'gpt-4o-mini',
+          messages: [{ role: 'system', content: SYSTEM_PROMPT + FINAL_TURN_HINT }, ...messages],
+          temperature: 0.6,
+          max_tokens: 200,
+        }),
+      })
+
+      let reflection = ''
+      if (res.ok) {
+        const data = await res.json().catch(() => null)
+        reflection = dropTrailingQuestions(
+          (data?.choices?.[0]?.message?.content || '').trim()
+        )
+      } else {
+        const body = await res.text().catch(() => '')
+        console.error(`[chat] OpenAI ответил ${res.status} на последнем сообщении: ${body.slice(0, 500)}`)
+      }
+
+      // Даже если модель промолчала, прощание человек всё равно увидит.
+      return textAsStream(
+        reflection ? `${reflection}\n\n${FINAL_TURN_CLOSING}` : FINAL_TURN_CLOSING
+      )
+    }
 
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
@@ -99,7 +157,7 @@ export async function POST(request: Request) {
       },
       body: JSON.stringify({
         model: 'gpt-4o-mini',
-        messages: [{ role: 'system', content: systemPrompt }, ...messages],
+        messages: [{ role: 'system', content: SYSTEM_PROMPT }, ...messages],
         temperature: 0.7,
         max_tokens: 400,
         stream: true,
@@ -160,11 +218,6 @@ export async function POST(request: Request) {
         } catch (err) {
           console.error('[chat] Поток от OpenAI оборвался:', err)
         } finally {
-          if (isFinalTurn) {
-            controller.enqueue(
-              encoder.encode(`data: ${JSON.stringify({ content: FINAL_TURN_CLOSING })}\n\n`)
-            )
-          }
           controller.enqueue(encoder.encode('data: [DONE]\n\n'))
           controller.close()
         }
